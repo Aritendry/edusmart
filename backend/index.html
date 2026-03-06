@@ -2,247 +2,1061 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EduSmart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f7f5f2;
+      --surface:  #ffffff;
+      --border:   #e5e1db;
+      --border2:  #cfc9c0;
+      --text:     #1a1714;
+      --muted:    #7a7470;
+      --accent:   #b07d3a;
+      --accent-l: #f5ede0;
+      --accent-d: #8a6028;
+      --green:    #2d7a4f;
+      --green-l:  #eaf4ee;
+      --red:      #c0392b;
+      --red-l:    #fdf0ee;
+      --blue:     #2c5f8a;
+      --blue-l:   #edf3fa;
+      --yellow:   #a07020;
+      --yellow-l: #fdf6e3;
+      --radius:   8px;
+      --shadow:   0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ── TOPBAR ─────────────────────────────────────────────── */
+    #topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    #topbar-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      height: 56px;
+    }
+    #logo {
+      font-family: 'Lora', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: .5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    #logo span { color: var(--muted); font-weight: 400; font-size: 12px; margin-left: 6px; }
+
+    /* ── TABS ───────────────────────────────────────────────── */
+    #tabs {
+      display: flex;
+      gap: 2px;
+      flex: 1;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    #tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      white-space: nowrap;
+      border: none;
+      background: transparent;
+      transition: all .15s;
+    }
+    .tab:hover { color: var(--text); background: var(--bg); }
+    .tab.active { color: var(--accent); background: var(--accent-l); }
+    .tab svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .tab-sep { width: 1px; background: var(--border); margin: 10px 4px; align-self: stretch; }
+
+    /* ── AUTH STATUS ────────────────────────────────────────── */
+    #auth-chip {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      background: var(--bg);
+      white-space: nowrap;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all .15s;
+    }
+    #auth-chip:hover { border-color: var(--border2); }
+    #auth-chip.on { color: var(--green); border-color: #b6dfc8; background: var(--green-l); }
+    #auth-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
+    #auth-chip.on #auth-dot { background: var(--green); }
+
+    /* ── MAIN ───────────────────────────────────────────────── */
+    #main {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    /* ── PAGES ──────────────────────────────────────────────── */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── PAGE TITLE ─────────────────────────────────────────── */
+    .ptitle { margin-bottom: 24px; }
+    .ptitle h2 { font-family: 'Lora', serif; font-size: 22px; font-weight: 600; color: var(--text); }
+    .ptitle p { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+    /* ── CARD ───────────────────────────────────────────────── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .card-head {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fdfcfb;
+    }
+    .card-head h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-body { padding: 20px; }
+
+    /* ── GRID ───────────────────────────────────────────────── */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 20px; }
+
+    /* ── STAT ───────────────────────────────────────────────── */
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+    }
+    .stat-val { font-family: 'Lora', serif; font-size: 30px; color: var(--accent); line-height: 1.1; }
+    .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-top: 4px; }
+
+    /* ── FORM ───────────────────────────────────────────────── */
+    .fg { display: grid; gap: 12px; }
+    .fg.c2 { grid-template-columns: 1fr 1fr; }
+    .fg.c3 { grid-template-columns: 1fr 1fr 1fr; }
+    .fl { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; display: block; margin-bottom: 5px; }
+    input[type=text], input[type=email], input[type=password],
+    input[type=number], input[type=datetime-local], select, textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(176,125,58,.1); }
+    input::placeholder { color: #bbb; }
+
+    /* ── BUTTONS ────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .btn svg { width: 14px; height: 14px; }
+    .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent-d); }
+    .btn-primary:hover { background: var(--accent-d); }
+    .btn-outline { background: transparent; color: var(--text); border-color: var(--border); }
+    .btn-outline:hover { border-color: var(--border2); background: var(--bg); }
+    .btn-ghost { background: transparent; color: var(--muted); border-color: transparent; }
+    .btn-ghost:hover { color: var(--text); background: var(--bg); }
+    .btn-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+
+    /* ── ALERT ──────────────────────────────────────────────── */
+    .alert {
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert-ok  { background: var(--green-l); color: var(--green); border: 1px solid #b6dfc8; }
+    .alert-err { background: var(--red-l); color: var(--red); border: 1px solid #f0c0bb; }
+    .alert-info { background: var(--blue-l); color: var(--blue); border: 1px solid #b0ccdf; }
+
+    /* ── TABLE ──────────────────────────────────────────────── */
+    .tbl-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      color: var(--muted);
+      background: #fdfcfb;
+      border-bottom: 1px solid var(--border);
+    }
+    td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #fdfcfb; }
+
+    /* ── BADGE ──────────────────────────────────────────────── */
+    .badge {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .b-green  { background: var(--green-l); color: var(--green); }
+    .b-red    { background: var(--red-l); color: var(--red); }
+    .b-yellow { background: var(--yellow-l); color: var(--yellow); }
+    .b-blue   { background: var(--blue-l); color: var(--blue); }
+    .b-beige  { background: var(--accent-l); color: var(--accent); }
+
+    /* ── ID CHIP ────────────────────────────────────────────── */
+    .id-chip {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    /* ── SCORE BAR ──────────────────────────────────────────── */
+    .sbar { display: flex; align-items: center; gap: 8px; min-width: 120px; }
+    .sbar-track { flex: 1; height: 5px; background: var(--border); border-radius: 3px; }
+    .sbar-fill { height: 100%; border-radius: 3px; transition: width .3s; }
+
+    /* ── EMPTY / LOADING ────────────────────────────────────── */
+    .empty { text-align: center; padding: 36px; color: var(--muted); font-size: 13px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    /* ── RESPONSE BOX ───────────────────────────────────────── */
+    .resp {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1.7;
+      color: var(--muted);
+      min-height: 60px;
+      max-height: 220px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .resp.ok  { color: var(--green); border-color: #b6dfc8; background: var(--green-l); }
+    .resp.err { color: var(--red);   border-color: #f0c0bb; background: var(--red-l); }
+
+    /* ── DIVIDER ────────────────────────────────────────────── */
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+    /* ── FILTER ROW ─────────────────────────────────────────── */
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .filter-row input { max-width: 180px; }
+    .filter-row label { font-size: 12px; color: var(--muted); font-weight: 500; }
+  </style>
 </head>
 <body>
 
-<h1>EduSmart ERP</h1>
-<p>API : <a href="http://localhost:8000" target="_blank">localhost:8000</a> | <a href="http://localhost:8000/docs" target="_blank">Swagger</a></p>
+<!-- TOPBAR -->
+<div id="topbar">
+  <div id="topbar-inner">
+    <div id="logo">EduSmart <span>ERP</span></div>
 
-<!-- AUTH -->
-<details open>
-  <summary><h2>Connexion</h2></summary>
-  <label>Email : <input type="email" id="email" value="admin@edusmart.com"></label><br>
-  <label>Mot de passe : <input type="password" id="password" value="admin123"></label><br><br>
-  <button onclick="login()">Se connecter</button>
-  <p id="auth-status"></p>
-</details>
+    <div id="tabs">
+      <button class="tab active" onclick="go('dashboard')" id="t-dashboard">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Accueil
+      </button>
+      <div class="tab-sep"></div>
+      <button class="tab" onclick="go('students')" id="t-students">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Étudiants
+      </button>
+      <button class="tab" onclick="go('teachers')" id="t-teachers">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Formateurs
+      </button>
+      <button class="tab" onclick="go('semesters')" id="t-semesters">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Semestres
+      </button>
+      <button class="tab" onclick="go('courses')" id="t-courses">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        Cours
+      </button>
+      <div class="tab-sep"></div>
+      <button class="tab" onclick="go('enrollments')" id="t-enrollments">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Inscriptions
+      </button>
+      <button class="tab" onclick="go('grades')" id="t-grades">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Notes
+      </button>
+      <button class="tab" onclick="go('audit')" id="t-audit">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+        Audit
+      </button>
+    </div>
 
-<hr>
+    <div id="auth-chip" onclick="go('login')">
+      <div id="auth-dot"></div>
+      <span id="auth-label">Connexion</span>
+    </div>
+  </div>
+</div>
 
-<!-- NAVIGATION -->
-<details>
-  <summary><h2>Étudiants</h2></summary>
-  <button onclick="loadSection('students')">Charger la liste</button>
-  <br><br>
-  <b>Créer un étudiant</b><br>
-  <label>Email : <input type="email" id="s-email"></label><br>
-  <label>Mot de passe : <input type="password" id="s-password"></label><br>
-  <label>Prénom : <input type="text" id="s-firstname"></label><br>
-  <label>Nom : <input type="text" id="s-lastname"></label><br>
-  <label>Téléphone : <input type="text" id="s-phone"></label><br><br>
-  <button onclick="createStudent()">Créer</button>
-  <pre id="students-output"></pre>
-</details>
+<!-- MAIN -->
+<div id="main">
 
-<details>
-  <summary><h2>Formateurs</h2></summary>
-  <button onclick="loadSection('teachers')">Charger la liste</button>
-  <br><br>
-  <b>Créer un formateur</b><br>
-  <label>Email : <input type="email" id="t-email"></label><br>
-  <label>Mot de passe : <input type="password" id="t-password"></label><br>
-  <label>Prénom : <input type="text" id="t-firstname"></label><br>
-  <label>Nom : <input type="text" id="t-lastname"></label><br>
-  <label>Spécialité : <input type="text" id="t-specialty"></label><br><br>
-  <button onclick="createTeacher()">Créer</button>
-  <pre id="teachers-output"></pre>
-</details>
+  <!-- ── DASHBOARD ─────────────────────────────────────────── -->
+  <div class="page active" id="p-dashboard">
+    <div class="ptitle">
+      <h2>Tableau de bord</h2>
+      <p>Vue d'ensemble du système académique</p>
+    </div>
+    <div class="g4" id="stats-row">
+      <div class="stat"><div class="stat-val" id="st-students">—</div><div class="stat-lbl">Étudiants</div></div>
+      <div class="stat"><div class="stat-val" id="st-teachers">—</div><div class="stat-lbl">Formateurs</div></div>
+      <div class="stat"><div class="stat-val" id="st-courses">—</div><div class="stat-lbl">Cours</div></div>
+      <div class="stat"><div class="stat-val" id="st-enrollments">—</div><div class="stat-lbl">Inscriptions</div></div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-head"><h3>Inscriptions par statut</h3></div>
+        <div class="card-body" id="dash-enrollments"><div class="empty">Connectez-vous pour charger</div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Derniers cours créés</h3><button class="btn btn-ghost" onclick="loadDashboard()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Rafraîchir</button></div>
+        <div class="card-body" id="dash-courses"><div class="empty">—</div></div>
+      </div>
+    </div>
+  </div>
 
-<details>
-  <summary><h2>Semestres</h2></summary>
-  <button onclick="loadSection('semesters')">Charger la liste</button>
-  <br><br>
-  <b>Créer un semestre</b><br>
-  <label>Nom : <input type="text" id="sem-name" placeholder="S1 2024-2025"></label><br>
-  <label>Début : <input type="datetime-local" id="sem-start"></label><br>
-  <label>Fin : <input type="datetime-local" id="sem-end"></label><br>
-  <label>Deadline inscription : <input type="datetime-local" id="sem-deadline"></label><br><br>
-  <button onclick="createSemester()">Créer</button>
-  <pre id="semesters-output"></pre>
-</details>
+  <!-- ── LOGIN ─────────────────────────────────────────────── -->
+  <div class="page" id="p-login">
+    <div class="ptitle"><h2>Connexion</h2><p>Authentification administrateur</p></div>
+    <div class="card" style="max-width:440px">
+      <div class="card-head"><h3>Identifiants</h3></div>
+      <div class="card-body">
+        <div id="login-alert"></div>
+        <div class="fg">
+          <div><label class="fl">Email</label><input type="email" id="email" value="admin@edusmart.com"></div>
+          <div><label class="fl">Mot de passe</label><input type="password" id="password" value="admin123"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="login()">Se connecter</button>
+          <button class="btn btn-outline" onclick="logout()">Déconnexion</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<details>
-  <summary><h2>Cours</h2></summary>
-  <button onclick="loadSection('courses')">Charger la liste</button>
-  <br><br>
-  <b>Créer un cours</b><br>
-  <label>Code : <input type="text" id="c-code" placeholder="INF301"></label><br>
-  <label>Nom : <input type="text" id="c-name"></label><br>
-  <label>Crédits : <input type="number" id="c-credits" value="3"></label><br>
-  <label>Quota : <input type="number" id="c-quota" value="30"></label><br>
-  <label>ID Formateur : <input type="number" id="c-teacher"></label><br>
-  <label>ID Semestre : <input type="number" id="c-semester"></label><br><br>
-  <button onclick="createCourse()">Créer</button>
-  <pre id="courses-output"></pre>
-</details>
+  <!-- ── STUDENTS ──────────────────────────────────────────── -->
+  <div class="page" id="p-students">
+    <div class="ptitle"><h2>Étudiants</h2><p>Création et consultation des profils</p></div>
+    <div class="g2" style="align-items:start">
+      <div class="card">
+        <div class="card-head"><h3>Nouvel étudiant</h3></div>
+        <div class="card-body">
+          <div id="s-alert"></div>
+          <div class="fg c2">
+            <div><label class="fl">Prénom</label><input type="text" id="s-fn" placeholder="Marie"></div>
+            <div><label class="fl">Nom</label><input type="text" id="s-ln" placeholder="Dupont"></div>
+          </div>
+          <div class="fg" style="margin-top:12px">
+            <div><label class="fl">Email</label><input type="email" id="s-email" placeholder="marie@etu.edusmart.com"></div>
+            <div><label class="fl">Mot de passe</label><input type="password" id="s-pw" placeholder="••••••••"></div>
+            <div><label class="fl">Téléphone</label><input type="text" id="s-phone" placeholder="Optionnel"></div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="createStudent()">Créer l'étudiant</button></div>
+          <div style="margin-top:14px"><div class="resp" id="s-resp">—</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Liste des étudiants</h3>
+          <button class="btn btn-outline" onclick="loadStudents()">Charger</button>
+        </div>
+        <div id="s-list"><div class="empty">Cliquez sur Charger</div></div>
+      </div>
+    </div>
+  </div>
 
-<details>
-  <summary><h2>Inscriptions</h2></summary>
-  <button onclick="loadSection('enrollments')">Charger la liste</button>
-  <br><br>
-  <b>Inscrire un étudiant</b><br>
-  <label>ID Étudiant : <input type="number" id="e-student"></label><br>
-  <label>ID Cours : <input type="number" id="e-course"></label><br><br>
-  <button onclick="createEnrollment()">Inscrire</button>
-  <br><br>
-  <b>Changer le statut</b><br>
-  <label>ID Inscription : <input type="number" id="e-id"></label><br>
-  <label>Statut :
-    <select id="e-status">
-      <option value="en_attente">En attente</option>
-      <option value="validee">Validée</option>
-      <option value="annulee">Annulée</option>
-    </select>
-  </label><br><br>
-  <button onclick="updateEnrollment()">Mettre à jour</button>
-  <pre id="enrollments-output"></pre>
-</details>
+  <!-- ── TEACHERS ──────────────────────────────────────────── -->
+  <div class="page" id="p-teachers">
+    <div class="ptitle"><h2>Formateurs</h2><p>Gestion du corps enseignant</p></div>
+    <div class="g2" style="align-items:start">
+      <div class="card">
+        <div class="card-head"><h3>Nouveau formateur</h3></div>
+        <div class="card-body">
+          <div id="t-alert"></div>
+          <div class="fg c2">
+            <div><label class="fl">Prénom</label><input type="text" id="t-fn" placeholder="Jean"></div>
+            <div><label class="fl">Nom</label><input type="text" id="t-ln" placeholder="Martin"></div>
+          </div>
+          <div class="fg" style="margin-top:12px">
+            <div><label class="fl">Email</label><input type="email" id="t-email" placeholder="jean@edusmart.com"></div>
+            <div><label class="fl">Mot de passe</label><input type="password" id="t-pw" placeholder="••••••••"></div>
+            <div><label class="fl">Spécialité</label><input type="text" id="t-spec" placeholder="ex : Informatique"></div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="createTeacher()">Créer le formateur</button></div>
+          <div style="margin-top:14px"><div class="resp" id="t-resp">—</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Liste des formateurs</h3>
+          <button class="btn btn-outline" onclick="loadTeachers()">Charger</button>
+        </div>
+        <div id="t-list"><div class="empty">Cliquez sur Charger</div></div>
+      </div>
+    </div>
+  </div>
 
-<details>
-  <summary><h2>Notes</h2></summary>
-  <button onclick="loadSection('grades')">Charger la liste</button>
-  <br><br>
-  <b>Attribuer une note</b><br>
-  <label>ID Inscription : <input type="number" id="g-enrollment"></label><br>
-  <label>Note (/20) : <input type="number" id="g-score" min="0" max="20" step="0.5"></label><br>
-  <label>Commentaire : <input type="text" id="g-comment"></label><br><br>
-  <button onclick="createGrade()">Attribuer</button>
-  <pre id="grades-output"></pre>
-</details>
+  <!-- ── SEMESTERS ─────────────────────────────────────────── -->
+  <div class="page" id="p-semesters">
+    <div class="ptitle"><h2>Semestres</h2><p>Planification académique</p></div>
+    <div class="g2" style="align-items:start">
+      <div class="card">
+        <div class="card-head"><h3>Nouveau semestre</h3></div>
+        <div class="card-body">
+          <div id="sem-alert"></div>
+          <div class="fg">
+            <div><label class="fl">Nom</label><input type="text" id="sem-name" placeholder="S1 2025-2026"></div>
+            <div><label class="fl">Date de début</label><input type="datetime-local" id="sem-start"></div>
+            <div><label class="fl">Date de fin</label><input type="datetime-local" id="sem-end"></div>
+            <div><label class="fl">Deadline inscription</label><input type="datetime-local" id="sem-dl"></div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="createSemester()">Créer le semestre</button></div>
+          <div style="margin-top:14px"><div class="resp" id="sem-resp">—</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Liste des semestres</h3>
+          <button class="btn btn-outline" onclick="loadSemesters()">Charger</button>
+        </div>
+        <div id="sem-list"><div class="empty">Cliquez sur Charger</div></div>
+      </div>
+    </div>
+  </div>
 
-<details>
-  <summary><h2>Audit Log</h2></summary>
-  <button onclick="loadSection('audit')">Charger les logs</button>
-  <pre id="audit-output"></pre>
-</details>
+  <!-- ── COURSES ───────────────────────────────────────────── -->
+  <div class="page" id="p-courses">
+    <div class="ptitle"><h2>Cours</h2><p>Catalogue des modules de formation</p></div>
+    <div class="g2" style="align-items:start">
+      <div class="card">
+        <div class="card-head"><h3>Nouveau cours</h3></div>
+        <div class="card-body">
+          <div id="c-alert"></div>
+          <div class="fg c2">
+            <div><label class="fl">Code</label><input type="text" id="c-code" placeholder="INF401"></div>
+            <div><label class="fl">Nom</label><input type="text" id="c-name" placeholder="Algorithmes"></div>
+            <div><label class="fl">Crédits</label><input type="number" id="c-credits" value="3"></div>
+            <div><label class="fl">Quota (places)</label><input type="number" id="c-quota" value="30"></div>
+            <div><label class="fl">ID Formateur</label><input type="number" id="c-teacher" placeholder="1"></div>
+            <div><label class="fl">ID Semestre</label><input type="number" id="c-sem" placeholder="1"></div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="createCourse()">Créer le cours</button></div>
+          <div style="margin-top:14px"><div class="resp" id="c-resp">—</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Liste des cours</h3>
+          <button class="btn btn-outline" onclick="loadCourses()">Charger</button>
+        </div>
+        <div id="c-list"><div class="empty">Cliquez sur Charger</div></div>
+      </div>
+    </div>
+  </div>
 
-<hr>
-<p id="global-error" style="color:red"></p>
+  <!-- ── ENROLLMENTS ───────────────────────────────────────── -->
+  <div class="page" id="p-enrollments">
+    <div class="ptitle"><h2>Inscriptions</h2><p>Gestion des inscriptions aux cours</p></div>
+    <div class="g2" style="align-items:start;margin-bottom:16px">
+      <div class="card">
+        <div class="card-head"><h3>Inscrire un étudiant</h3></div>
+        <div class="card-body">
+          <div id="e-alert"></div>
+          <div class="fg c2">
+            <div><label class="fl">ID Étudiant</label><input type="number" id="e-sid" placeholder="1"></div>
+            <div><label class="fl">ID Cours</label><input type="number" id="e-cid" placeholder="1"></div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="createEnrollment()">Inscrire</button></div>
+          <div style="margin-top:14px"><div class="resp" id="e-resp">—</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Changer le statut</h3></div>
+        <div class="card-body">
+          <div class="fg c2">
+            <div><label class="fl">ID Inscription</label><input type="number" id="e-uid" placeholder="1"></div>
+            <div>
+              <label class="fl">Nouveau statut</label>
+              <select id="e-status">
+                <option value="en_attente">En attente</option>
+                <option value="validee">Validée</option>
+                <option value="annulee">Annulée</option>
+              </select>
+            </div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="updateEnrollment()">Mettre à jour</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <h3>Liste des inscriptions</h3>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="number" id="fe-sid" placeholder="Filtrer étudiant" style="width:150px;padding:5px 10px;font-size:12px">
+          <input type="number" id="fe-cid" placeholder="Filtrer cours" style="width:130px;padding:5px 10px;font-size:12px">
+          <button class="btn btn-outline" onclick="loadEnrollments()">Charger</button>
+        </div>
+      </div>
+      <div id="e-list"><div class="empty">Cliquez sur Charger</div></div>
+    </div>
+  </div>
+
+  <!-- ── GRADES ────────────────────────────────────────────── -->
+  <div class="page" id="p-grades">
+    <div class="ptitle"><h2>Notes</h2><p>Attribution et modification des évaluations</p></div>
+    <div class="g2" style="align-items:start;margin-bottom:16px">
+      <div class="card">
+        <div class="card-head"><h3>Attribuer une note</h3></div>
+        <div class="card-body">
+          <div id="g-alert"></div>
+          <div class="fg">
+            <div><label class="fl">ID Inscription</label><input type="number" id="g-eid" placeholder="1"></div>
+            <div><label class="fl">Note (/20)</label><input type="number" id="g-score" min="0" max="20" step="0.5" placeholder="14.5"></div>
+            <div><label class="fl">Commentaire</label><input type="text" id="g-comment" placeholder="Optionnel"></div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="createGrade()">Attribuer</button></div>
+          <div style="margin-top:14px"><div class="resp" id="g-resp">—</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Modifier une note</h3></div>
+        <div class="card-body">
+          <div class="fg">
+            <div><label class="fl">ID Note</label><input type="number" id="g-uid" placeholder="1"></div>
+            <div><label class="fl">Nouvelle note (/20)</label><input type="number" id="g-uscore" min="0" max="20" step="0.5"></div>
+            <div><label class="fl">Commentaire</label><input type="text" id="g-ucomment" placeholder="Optionnel"></div>
+          </div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="updateGrade()">Modifier</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <h3>Liste des notes</h3>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="number" id="fg-eid" placeholder="ID inscription" style="width:160px;padding:5px 10px;font-size:12px">
+          <button class="btn btn-outline" onclick="loadGrades()">Charger</button>
+        </div>
+      </div>
+      <div id="g-list"><div class="empty">Cliquez sur Charger</div></div>
+    </div>
+  </div>
+
+  <!-- ── AUDIT ─────────────────────────────────────────────── -->
+  <div class="page" id="p-audit">
+    <div class="ptitle"><h2>Audit</h2><p>Journal des opérations système</p></div>
+    <div class="card">
+      <div class="card-head">
+        <h3>100 dernières opérations</h3>
+        <button class="btn btn-outline" onclick="loadAudit()">Charger</button>
+      </div>
+      <div id="audit-list"><div class="empty">Cliquez sur Charger</div></div>
+    </div>
+  </div>
+
+</div><!-- /main -->
 
 <script>
-  const API = "http://localhost:8000/api/v1";
-  let TOKEN = localStorage.getItem("edusmart_token") || "";
+const API = 'http://localhost:8000/api/v1';
+let TOKEN = localStorage.getItem('edusmart_token') || '';
 
-  // Afficher token existant au chargement
-  if (TOKEN) {
-    document.getElementById("auth-status").textContent = "✅ Déjà connecté (token en mémoire)";
-  }
+// ── NAV ──────────────────────────────────────────────────────
+function go(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('p-' + name).classList.add('active');
+  const tab = document.getElementById('t-' + name);
+  if (tab) tab.classList.add('active');
+}
 
-  function headers() {
-    return {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${TOKEN}`
-    };
-  }
+// ── AUTH UI ──────────────────────────────────────────────────
+function setAuthUI(ok, label) {
+  const chip = document.getElementById('auth-chip');
+  document.getElementById('auth-label').textContent = label || (ok ? 'Connecté' : 'Connexion');
+  chip.className = ok ? 'on' : '';
+  chip.id = 'auth-chip';
+}
 
-  async function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const form = new URLSearchParams();
-    form.append("username", email);
-    form.append("password", password);
+// ── HELPERS ──────────────────────────────────────────────────
+function h(json = true) {
+  const heads = { Authorization: 'Bearer ' + TOKEN };
+  if (json) heads['Content-Type'] = 'application/json';
+  return heads;
+}
 
-    const res = await fetch(`${API}/auth/login`, { method: "POST", body: form });
-    const data = await res.json();
-    if (data.access_token) {
-      TOKEN = data.access_token;
-      localStorage.setItem("edusmart_token", TOKEN);
-      document.getElementById("auth-status").textContent = "✅ Connecté en tant que " + email;
+async function api(method, path, body) {
+  const opts = { method, headers: h(!!body) };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API + path, opts);
+  const data = await res.json();
+  if (!res.ok) throw data;
+  return data;
+}
+
+function alert_(id, msg, type = 'ok') {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+  setTimeout(() => el.innerHTML = '', 4000);
+}
+
+function resp(id, data, err = false) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'resp ' + (err ? 'err' : 'ok');
+  el.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+}
+
+function loading(id) {
+  document.getElementById(id).innerHTML = '<div class="empty"><span class="spinner"></span>Chargement...</div>';
+}
+
+// ── AUTH ─────────────────────────────────────────────────────
+async function login() {
+  const form = new URLSearchParams();
+  form.append('username', document.getElementById('email').value);
+  form.append('password', document.getElementById('password').value);
+  try {
+    const res = await fetch(API + '/auth/login', { method: 'POST', body: form });
+    const d = await res.json();
+    if (d.access_token) {
+      TOKEN = d.access_token;
+      localStorage.setItem('edusmart_token', TOKEN);
+      const email = document.getElementById('email').value;
+      localStorage.setItem('edusmart_email', email);
+      setAuthUI(true, email.split('@')[0]);
+      alert_('login-alert', 'Connexion réussie');
+      loadDashboard();
+      go('dashboard');
     } else {
-      document.getElementById("auth-status").textContent = "❌ Erreur : " + JSON.stringify(data);
+      alert_('login-alert', d.detail || 'Erreur', 'err');
     }
-  }
+  } catch { alert_('login-alert', 'API inaccessible', 'err'); }
+}
 
-  async function loadSection(section) {
-    const endpoint = section === "audit" ? `${API}/audit` : `${API}/${section}`;
-    const res = await fetch(endpoint, { headers: headers() });
-    const data = await res.json();
-    document.getElementById(`${section}-output`).textContent = JSON.stringify(data, null, 2);
-  }
+function logout() {
+  TOKEN = ''; localStorage.removeItem('edusmart_token');
+  setAuthUI(false); alert_('login-alert', 'Déconnecté', 'info');
+}
 
-  async function post(endpoint, body, outputId) {
-    const res = await fetch(`${API}/${endpoint}`, {
-      method: "POST",
-      headers: headers(),
-      body: JSON.stringify(body)
+// ── DASHBOARD ────────────────────────────────────────────────
+async function loadDashboard() {
+  if (!TOKEN) return;
+  try {
+    const [students, teachers, courses, enrollments] = await Promise.all([
+      api('GET', '/students'), api('GET', '/teachers'),
+      api('GET', '/courses'),  api('GET', '/enrollments'),
+    ]);
+    document.getElementById('st-students').textContent = students.length;
+    document.getElementById('st-teachers').textContent = teachers.length;
+    document.getElementById('st-courses').textContent = courses.length;
+    document.getElementById('st-enrollments').textContent = enrollments.length;
+
+    const count = s => enrollments.filter(e => e.status === s).length;
+    const pending = count('en_attente'), valid = count('validee'), cancel = count('annulee');
+
+    document.getElementById('dash-enrollments').innerHTML = `
+      <div style="display:grid;gap:10px">
+        ${[
+          ['En attente', pending, 'b-yellow'],
+          ['Validées',   valid,   'b-green'],
+          ['Annulées',   cancel,  'b-red'],
+        ].map(([lbl, n, cls]) => `
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid var(--border);border-radius:6px">
+            <span style="font-size:13px;color:var(--muted)">${lbl}</span>
+            <span class="badge ${cls}" style="font-size:13px;padding:3px 12px">${n}</span>
+          </div>`).join('')}
+      </div>`;
+
+    document.getElementById('dash-courses').innerHTML = `
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Code</th><th>Nom</th><th>Quota</th></tr></thead>
+        <tbody>${courses.slice(-5).reverse().map(c => `
+          <tr>
+            <td><span class="badge b-beige">${c.code}</span></td>
+            <td>${c.name}</td>
+            <td style="color:var(--muted)">${c.quota} places</td>
+          </tr>`).join('')}
+        </tbody>
+      </table></div>`;
+  } catch(e) {
+    document.getElementById('dash-enrollments').innerHTML = '<div class="empty" style="color:var(--red)">Erreur de chargement — vérifiez la connexion API</div>';
+  }
+}
+
+// ── STUDENTS ─────────────────────────────────────────────────
+async function createStudent() {
+  try {
+    const d = await api('POST', '/students', {
+      email: document.getElementById('s-email').value,
+      password: document.getElementById('s-pw').value,
+      first_name: document.getElementById('s-fn').value,
+      last_name: document.getElementById('s-ln').value,
+      phone: document.getElementById('s-phone').value || null,
     });
-    const data = await res.json();
-    document.getElementById(outputId).textContent = JSON.stringify(data, null, 2);
-  }
+    resp('s-resp', d);
+    alert_('s-alert', `Étudiant créé : ${d.first_name} ${d.last_name} — ID ${d.id}`);
+  } catch(e) { resp('s-resp', e, true); alert_('s-alert', e.detail || 'Erreur', 'err'); }
+}
 
-  async function patch(endpoint, body, outputId) {
-    const res = await fetch(`${API}/${endpoint}`, {
-      method: "PATCH",
-      headers: headers(),
-      body: JSON.stringify(body)
+async function loadStudents() {
+  loading('s-list');
+  try {
+    const data = await api('GET', '/students');
+    if (!data.length) { document.getElementById('s-list').innerHTML = '<div class="empty">Aucun étudiant</div>'; return; }
+    document.getElementById('s-list').innerHTML = `
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>ID</th><th>Prénom</th><th>Nom</th><th>Email</th><th>Téléphone</th></tr></thead>
+        <tbody>${data.map(s => `<tr>
+          <td><span class="id-chip">#${s.id}</span></td>
+          <td>${s.first_name}</td><td>${s.last_name}</td>
+          <td style="color:var(--muted);font-size:12px">${s.user?.email || '—'}</td>
+          <td style="color:var(--muted)">${s.phone || '—'}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+  } catch(e) { document.getElementById('s-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+}
+
+// ── TEACHERS ─────────────────────────────────────────────────
+async function createTeacher() {
+  try {
+    const d = await api('POST', '/teachers', {
+      email: document.getElementById('t-email').value,
+      password: document.getElementById('t-pw').value,
+      first_name: document.getElementById('t-fn').value,
+      last_name: document.getElementById('t-ln').value,
+      specialty: document.getElementById('t-spec').value || null,
     });
-    const data = await res.json();
-    document.getElementById(outputId).textContent = JSON.stringify(data, null, 2);
-  }
+    resp('t-resp', d);
+    alert_('t-alert', `Formateur créé : ${d.first_name} ${d.last_name} — ID ${d.id}`);
+  } catch(e) { resp('t-resp', e, true); alert_('t-alert', e.detail || 'Erreur', 'err'); }
+}
 
-  function createStudent() {
-    post("students", {
-      email: document.getElementById("s-email").value,
-      password: document.getElementById("s-password").value,
-      first_name: document.getElementById("s-firstname").value,
-      last_name: document.getElementById("s-lastname").value,
-      phone: document.getElementById("s-phone").value || null
-    }, "students-output");
-  }
+async function loadTeachers() {
+  loading('t-list');
+  try {
+    const data = await api('GET', '/teachers');
+    if (!data.length) { document.getElementById('t-list').innerHTML = '<div class="empty">Aucun formateur</div>'; return; }
+    document.getElementById('t-list').innerHTML = `
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>ID</th><th>Prénom</th><th>Nom</th><th>Spécialité</th><th>Email</th></tr></thead>
+        <tbody>${data.map(t => `<tr>
+          <td><span class="id-chip">#${t.id}</span></td>
+          <td>${t.first_name}</td><td>${t.last_name}</td>
+          <td><span class="badge b-blue">${t.specialty || '—'}</span></td>
+          <td style="color:var(--muted);font-size:12px">${t.user?.email || '—'}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+  } catch(e) { document.getElementById('t-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+}
 
-  function createTeacher() {
-    post("teachers", {
-      email: document.getElementById("t-email").value,
-      password: document.getElementById("t-password").value,
-      first_name: document.getElementById("t-firstname").value,
-      last_name: document.getElementById("t-lastname").value,
-      specialty: document.getElementById("t-specialty").value || null
-    }, "teachers-output");
-  }
+// ── SEMESTERS ────────────────────────────────────────────────
+async function createSemester() {
+  try {
+    const d = await api('POST', '/semesters', {
+      name: document.getElementById('sem-name').value,
+      start_date: new Date(document.getElementById('sem-start').value).toISOString(),
+      end_date: new Date(document.getElementById('sem-end').value).toISOString(),
+      enroll_deadline: new Date(document.getElementById('sem-dl').value).toISOString(),
+    });
+    resp('sem-resp', d);
+    alert_('sem-alert', `Semestre créé : ${d.name} — ID ${d.id}`);
+  } catch(e) { resp('sem-resp', e, true); alert_('sem-alert', e.detail || 'Erreur', 'err'); }
+}
 
-  function createSemester() {
-    post("semesters", {
-      name: document.getElementById("sem-name").value,
-      start_date: new Date(document.getElementById("sem-start").value).toISOString(),
-      end_date: new Date(document.getElementById("sem-end").value).toISOString(),
-      enroll_deadline: new Date(document.getElementById("sem-deadline").value).toISOString()
-    }, "semesters-output");
-  }
+async function loadSemesters() {
+  loading('sem-list');
+  try {
+    const data = await api('GET', '/semesters');
+    if (!data.length) { document.getElementById('sem-list').innerHTML = '<div class="empty">Aucun semestre</div>'; return; }
+    document.getElementById('sem-list').innerHTML = `
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>ID</th><th>Nom</th><th>Début</th><th>Fin</th><th>Deadline</th></tr></thead>
+        <tbody>${data.map(s => `<tr>
+          <td><span class="id-chip">#${s.id}</span></td>
+          <td><strong>${s.name}</strong></td>
+          <td style="color:var(--muted)">${new Date(s.start_date).toLocaleDateString('fr-FR')}</td>
+          <td style="color:var(--muted)">${new Date(s.end_date).toLocaleDateString('fr-FR')}</td>
+          <td style="font-size:12px">${new Date(s.enroll_deadline).toLocaleDateString('fr-FR')}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+  } catch(e) { document.getElementById('sem-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+}
 
-  function createCourse() {
-    post("courses", {
-      code: document.getElementById("c-code").value,
-      name: document.getElementById("c-name").value,
-      credits: parseInt(document.getElementById("c-credits").value),
-      quota: parseInt(document.getElementById("c-quota").value),
-      teacher_id: parseInt(document.getElementById("c-teacher").value),
-      semester_id: parseInt(document.getElementById("c-semester").value)
-    }, "courses-output");
-  }
+// ── COURSES ──────────────────────────────────────────────────
+async function createCourse() {
+  try {
+    const d = await api('POST', '/courses', {
+      code: document.getElementById('c-code').value,
+      name: document.getElementById('c-name').value,
+      credits: parseInt(document.getElementById('c-credits').value),
+      quota: parseInt(document.getElementById('c-quota').value),
+      teacher_id: parseInt(document.getElementById('c-teacher').value),
+      semester_id: parseInt(document.getElementById('c-sem').value),
+    });
+    resp('c-resp', d);
+    alert_('c-alert', `Cours créé : ${d.code} — ID ${d.id}`);
+  } catch(e) { resp('c-resp', e, true); alert_('c-alert', e.detail || 'Erreur', 'err'); }
+}
 
-  function createEnrollment() {
-    post("enrollments", {
-      student_id: parseInt(document.getElementById("e-student").value),
-      course_id: parseInt(document.getElementById("e-course").value)
-    }, "enrollments-output");
-  }
+async function loadCourses() {
+  loading('c-list');
+  try {
+    const data = await api('GET', '/courses');
+    if (!data.length) { document.getElementById('c-list').innerHTML = '<div class="empty">Aucun cours</div>'; return; }
+    document.getElementById('c-list').innerHTML = `
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>ID</th><th>Code</th><th>Nom</th><th>Crédits</th><th>Quota</th><th>ID Form.</th><th>ID Sem.</th></tr></thead>
+        <tbody>${data.map(c => `<tr>
+          <td><span class="id-chip">#${c.id}</span></td>
+          <td><span class="badge b-beige">${c.code}</span></td>
+          <td>${c.name}</td>
+          <td style="text-align:center">${c.credits}</td>
+          <td style="text-align:center">${c.quota}</td>
+          <td style="text-align:center;color:var(--muted)">${c.teacher_id}</td>
+          <td style="text-align:center;color:var(--muted)">${c.semester_id}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+  } catch(e) { document.getElementById('c-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+}
 
-  function updateEnrollment() {
-    const id = document.getElementById("e-id").value;
-    patch(`enrollments/${id}`, {
-      status: document.getElementById("e-status").value
-    }, "enrollments-output");
-  }
+// ── ENROLLMENTS ──────────────────────────────────────────────
+async function createEnrollment() {
+  try {
+    const d = await api('POST', '/enrollments', {
+      student_id: parseInt(document.getElementById('e-sid').value),
+      course_id: parseInt(document.getElementById('e-cid').value),
+    });
+    resp('e-resp', d);
+    alert_('e-alert', `Inscription créée — ID ${d.id}, statut : ${d.status}`);
+    loadEnrollments();
+  } catch(e) { resp('e-resp', e, true); alert_('e-alert', e.detail || 'Erreur', 'err'); }
+}
 
-  function createGrade() {
-    post("grades", {
-      enrollment_id: parseInt(document.getElementById("g-enrollment").value),
-      score: parseFloat(document.getElementById("g-score").value),
-      comment: document.getElementById("g-comment").value || null
-    }, "grades-output");
-  }
+async function updateEnrollment() {
+  const id = document.getElementById('e-uid').value;
+  try {
+    const d = await api('PATCH', '/enrollments/' + id, { status: document.getElementById('e-status').value });
+    resp('e-resp', d);
+    alert_('e-alert', `Statut mis à jour → ${d.status}`);
+    loadEnrollments();
+  } catch(e) { resp('e-resp', e, true); alert_('e-alert', e.detail || 'Erreur', 'err'); }
+}
+
+async function loadEnrollments() {
+  loading('e-list');
+  let url = '/enrollments';
+  const params = [];
+  const sid = document.getElementById('fe-sid').value;
+  const cid = document.getElementById('fe-cid').value;
+  if (sid) params.push('student_id=' + sid);
+  if (cid) params.push('course_id=' + cid);
+  if (params.length) url += '?' + params.join('&');
+  try {
+    const data = await api('GET', url);
+    if (!data.length) { document.getElementById('e-list').innerHTML = '<div class="empty">Aucune inscription</div>'; return; }
+    const sb = s => s === 'validee' ? '<span class="badge b-green">Validée</span>' :
+                    s === 'annulee' ? '<span class="badge b-red">Annulée</span>' :
+                    '<span class="badge b-yellow">En attente</span>';
+    document.getElementById('e-list').innerHTML = `
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>ID</th><th>Étudiant</th><th>Cours</th><th>Statut</th><th>Date</th></tr></thead>
+        <tbody>${data.map(e => `<tr>
+          <td><span class="id-chip">#${e.id}</span></td>
+          <td style="text-align:center">${e.student_id}</td>
+          <td style="text-align:center">${e.course_id}</td>
+          <td>${sb(e.status)}</td>
+          <td style="color:var(--muted);font-size:12px">${new Date(e.enrolled_at).toLocaleDateString('fr-FR')}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+  } catch(e) { document.getElementById('e-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+}
+
+// ── GRADES ───────────────────────────────────────────────────
+async function createGrade() {
+  try {
+    const d = await api('POST', '/grades', {
+      enrollment_id: parseInt(document.getElementById('g-eid').value),
+      score: parseFloat(document.getElementById('g-score').value),
+      comment: document.getElementById('g-comment').value || null,
+    });
+    resp('g-resp', d);
+    alert_('g-alert', `Note attribuée : ${d.score}/20 — ID ${d.id}`);
+    loadGrades();
+  } catch(e) { resp('g-resp', e, true); alert_('g-alert', e.detail || 'Erreur', 'err'); }
+}
+
+async function updateGrade() {
+  const id = document.getElementById('g-uid').value;
+  try {
+    const d = await api('PATCH', '/grades/' + id, {
+      score: parseFloat(document.getElementById('g-uscore').value),
+      comment: document.getElementById('g-ucomment').value || null,
+    });
+    resp('g-resp', d);
+    alert_('g-alert', `Note modifiée → ${d.score}/20`);
+    loadGrades();
+  } catch(e) { resp('g-resp', e, true); alert_('g-alert', e.detail || 'Erreur', 'err'); }
+}
+
+async function loadGrades() {
+  loading('g-list');
+  let url = '/grades';
+  const eid = document.getElementById('fg-eid').value;
+  if (eid) url += '?enrollment_id=' + eid;
+  try {
+    const data = await api('GET', url);
+    if (!data.length) { document.getElementById('g-list').innerHTML = '<div class="empty">Aucune note</div>'; return; }
+    const sc = s => s >= 16 ? 'b-green' : s >= 10 ? 'b-yellow' : 'b-red';
+    document.getElementById('g-list').innerHTML = `
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>ID</th><th>ID Inscription</th><th>Note</th><th>Progression</th><th>Commentaire</th><th>Date</th></tr></thead>
+        <tbody>${data.map(g => {
+          const color = g.score >= 16 ? 'var(--green)' : g.score >= 10 ? 'var(--yellow)' : 'var(--red)';
+          return `<tr>
+            <td><span class="id-chip">#${g.id}</span></td>
+            <td style="text-align:center">${g.enrollment_id}</td>
+            <td><span class="badge ${sc(g.score)}">${g.score}/20</span></td>
+            <td>
+              <div class="sbar">
+                <div class="sbar-track"><div class="sbar-fill" style="width:${g.score * 5}%;background:${color}"></div></div>
+                <span style="font-size:11px;color:var(--muted);width:28px;text-align:right">${g.score * 5}%</span>
+              </div>
+            </td>
+            <td style="color:var(--muted);font-size:12px">${g.comment || '—'}</td>
+            <td style="color:var(--muted);font-size:12px">${new Date(g.graded_at).toLocaleDateString('fr-FR')}</td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table></div>`;
+  } catch(e) { document.getElementById('g-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+}
+
+// ── AUDIT ─────────────────────────────────────────────────────
+async function loadAudit() {
+  loading('audit-list');
+  try {
+    const data = await api('GET', '/audit');
+    if (!data.length) { document.getElementById('audit-list').innerHTML = '<div class="empty">Aucun log</div>'; return; }
+    document.getElementById('audit-list').innerHTML = `
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>ID</th><th>Action</th><th>Entité</th><th>ID entité</th><th>Détail</th><th>Date</th></tr></thead>
+        <tbody>${data.map(l => `<tr>
+          <td><span class="id-chip">#${l.id}</span></td>
+          <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue)">${l.action}</td>
+          <td><span class="badge b-beige">${l.entity || '—'}</span></td>
+          <td style="text-align:center;color:var(--muted)">${l.entity_id || '—'}</td>
+          <td style="color:var(--muted);font-size:12px">${l.detail || '—'}</td>
+          <td style="color:var(--muted);font-size:12px">${new Date(l.created_at).toLocaleString('fr-FR')}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>`;
+  } catch(e) { document.getElementById('audit-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+if (TOKEN) {
+  const email = localStorage.getItem('edusmart_email') || 'admin';
+  setAuthUI(true, email.split('@')[0]);
+  loadDashboard();
+}
 </script>
-
 </body>
 </html>
