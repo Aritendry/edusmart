@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg:       #f7f5f2;
       --surface:  #ffffff;
@@ -26,314 +25,152 @@
       --blue-l:   #edf3fa;
       --yellow:   #a07020;
       --yellow-l: #fdf6e3;
-      --radius:   8px;
-      --shadow:   0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+      --purple:   #6b3fa0;
+      --purple-l: #f3eefb;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
     }
+    body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:14px; line-height:1.5; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      font-size: 14px;
-      line-height: 1.5;
-    }
+    /* TOPBAR */
+    #topbar { background:var(--surface); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; box-shadow:var(--shadow); }
+    #topbar-inner { max-width:1200px; margin:0 auto; padding:0 24px; display:flex; align-items:center; gap:24px; height:54px; }
+    #logo { font-family:'Lora',serif; font-size:17px; font-weight:600; color:var(--accent); white-space:nowrap; flex-shrink:0; }
+    #logo span { color:var(--muted); font-weight:400; font-size:11px; margin-left:5px; }
 
-    /* ── TOPBAR ─────────────────────────────────────────────── */
-    #topbar {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: var(--shadow);
-    }
-    #topbar-inner {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 0 28px;
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      height: 56px;
-    }
-    #logo {
-      font-family: 'Lora', serif;
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: .5px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    #logo span { color: var(--muted); font-weight: 400; font-size: 12px; margin-left: 6px; }
+    /* TABS */
+    #tabs { display:flex; gap:2px; flex:1; overflow-x:auto; scrollbar-width:none; }
+    #tabs::-webkit-scrollbar { display:none; }
+    .tab { display:flex; align-items:center; gap:5px; padding:7px 12px; border-radius:6px; font-size:12.5px; font-weight:500; color:var(--muted); cursor:pointer; white-space:nowrap; border:none; background:transparent; transition:all .15s; }
+    .tab:hover { color:var(--text); background:var(--bg); }
+    .tab.active { color:var(--accent); background:var(--accent-l); }
+    .tab.tab-ia.active { color:var(--purple); background:var(--purple-l); }
+    .tab.tab-seed.active { color:var(--green); background:var(--green-l); }
+    .tab svg { width:14px; height:14px; flex-shrink:0; }
+    .tsep { width:1px; background:var(--border); margin:10px 3px; align-self:stretch; }
 
-    /* ── TABS ───────────────────────────────────────────────── */
-    #tabs {
-      display: flex;
-      gap: 2px;
-      flex: 1;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    #tabs::-webkit-scrollbar { display: none; }
-    .tab {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--muted);
-      cursor: pointer;
-      white-space: nowrap;
-      border: none;
-      background: transparent;
-      transition: all .15s;
-    }
-    .tab:hover { color: var(--text); background: var(--bg); }
-    .tab.active { color: var(--accent); background: var(--accent-l); }
-    .tab svg { width: 15px; height: 15px; flex-shrink: 0; }
-    .tab-sep { width: 1px; background: var(--border); margin: 10px 4px; align-self: stretch; }
+    /* AUTH CHIP */
+    #auth-chip { display:flex; align-items:center; gap:6px; padding:5px 11px; border-radius:20px; font-size:12px; font-weight:500; border:1px solid var(--border); color:var(--muted); background:var(--bg); white-space:nowrap; cursor:pointer; flex-shrink:0; transition:all .15s; }
+    #auth-chip.on { color:var(--green); border-color:#b6dfc8; background:var(--green-l); }
+    #auth-dot { width:7px; height:7px; border-radius:50%; background:var(--border2); flex-shrink:0; }
+    #auth-chip.on #auth-dot { background:var(--green); }
 
-    /* ── AUTH STATUS ────────────────────────────────────────── */
-    #auth-chip {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 5px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      background: var(--bg);
-      white-space: nowrap;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: all .15s;
-    }
-    #auth-chip:hover { border-color: var(--border2); }
-    #auth-chip.on { color: var(--green); border-color: #b6dfc8; background: var(--green-l); }
-    #auth-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border2); flex-shrink: 0; }
-    #auth-chip.on #auth-dot { background: var(--green); }
+    /* MAIN */
+    #main { max-width:1200px; margin:0 auto; padding:24px; }
+    .page { display:none; }
+    .page.active { display:block; }
 
-    /* ── MAIN ───────────────────────────────────────────────── */
-    #main {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 28px;
-    }
+    /* PAGE TITLE */
+    .ptitle { margin-bottom:20px; }
+    .ptitle h2 { font-family:'Lora',serif; font-size:21px; font-weight:600; }
+    .ptitle p { font-size:12.5px; color:var(--muted); margin-top:3px; }
 
-    /* ── PAGES ──────────────────────────────────────────────── */
-    .page { display: none; }
-    .page.active { display: block; }
+    /* CARD */
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:14px; overflow:hidden; }
+    .card-head { padding:12px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:#fdfcfb; }
+    .card-head h3 { font-size:12.5px; font-weight:600; display:flex; align-items:center; gap:7px; }
+    .card-body { padding:18px; }
 
-    /* ── PAGE TITLE ─────────────────────────────────────────── */
-    .ptitle { margin-bottom: 24px; }
-    .ptitle h2 { font-family: 'Lora', serif; font-size: 22px; font-weight: 600; color: var(--text); }
-    .ptitle p { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    /* GRID */
+    .g2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+    .g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:18px; }
 
-    /* ── CARD ───────────────────────────────────────────────── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin-bottom: 16px;
-      overflow: hidden;
-    }
-    .card-head {
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #fdfcfb;
-    }
-    .card-head h3 {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .card-body { padding: 20px; }
+    /* STAT */
+    .stat { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow); }
+    .stat-val { font-family:'Lora',serif; font-size:28px; color:var(--accent); line-height:1.1; }
+    .stat-lbl { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.7px; margin-top:3px; }
 
-    /* ── GRID ───────────────────────────────────────────────── */
-    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-    .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 20px; }
-
-    /* ── STAT ───────────────────────────────────────────────── */
-    .stat {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 20px;
-      box-shadow: var(--shadow);
-    }
-    .stat-val { font-family: 'Lora', serif; font-size: 30px; color: var(--accent); line-height: 1.1; }
-    .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; margin-top: 4px; }
-
-    /* ── FORM ───────────────────────────────────────────────── */
-    .fg { display: grid; gap: 12px; }
-    .fg.c2 { grid-template-columns: 1fr 1fr; }
-    .fg.c3 { grid-template-columns: 1fr 1fr 1fr; }
-    .fl { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; display: block; margin-bottom: 5px; }
+    /* FORM */
+    .fg { display:grid; gap:11px; }
+    .fg.c2 { grid-template-columns:1fr 1fr; }
+    .fg.c3 { grid-template-columns:1fr 1fr 1fr; }
+    .fl { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; display:block; margin-bottom:4px; }
     input[type=text], input[type=email], input[type=password],
     input[type=number], input[type=datetime-local], select, textarea {
-      width: 100%;
-      padding: 9px 12px;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 13px;
-      font-family: 'DM Sans', sans-serif;
-      color: var(--text);
-      background: var(--surface);
-      outline: none;
-      transition: border-color .15s, box-shadow .15s;
-      -webkit-appearance: none;
+      width:100%; padding:8px 11px; border:1px solid var(--border); border-radius:6px;
+      font-size:13px; font-family:'DM Sans',sans-serif; color:var(--text); background:var(--surface);
+      outline:none; transition:border-color .15s, box-shadow .15s; -webkit-appearance:none;
     }
-    input:focus, select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(176,125,58,.1); }
-    input::placeholder { color: #bbb; }
+    input:focus, select:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(176,125,58,.1); }
+    input::placeholder { color:#bbb; }
 
-    /* ── BUTTONS ────────────────────────────────────────────── */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: all .15s;
-      white-space: nowrap;
-    }
-    .btn svg { width: 14px; height: 14px; }
-    .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent-d); }
-    .btn-primary:hover { background: var(--accent-d); }
-    .btn-outline { background: transparent; color: var(--text); border-color: var(--border); }
-    .btn-outline:hover { border-color: var(--border2); background: var(--bg); }
-    .btn-ghost { background: transparent; color: var(--muted); border-color: transparent; }
-    .btn-ghost:hover { color: var(--text); background: var(--bg); }
-    .btn-row { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+    /* BUTTONS */
+    .btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:6px; font-size:12px; font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer; border:1px solid transparent; transition:all .15s; white-space:nowrap; }
+    .btn svg { width:13px; height:13px; }
+    .btn-primary { background:var(--accent); color:#fff; border-color:var(--accent-d); }
+    .btn-primary:hover { background:var(--accent-d); }
+    .btn-purple { background:var(--purple); color:#fff; border-color:#5a2e90; }
+    .btn-purple:hover { background:#5a2e90; }
+    .btn-green { background:var(--green); color:#fff; border-color:#1f5e39; }
+    .btn-green:hover { background:#1f5e39; }
+    .btn-outline { background:transparent; color:var(--text); border-color:var(--border); }
+    .btn-outline:hover { border-color:var(--border2); background:var(--bg); }
+    .btn-ghost { background:transparent; color:var(--muted); border-color:transparent; }
+    .btn-ghost:hover { color:var(--text); background:var(--bg); }
+    .btn-row { display:flex; gap:7px; margin-top:14px; flex-wrap:wrap; }
 
-    /* ── ALERT ──────────────────────────────────────────────── */
-    .alert {
-      padding: 10px 14px;
-      border-radius: 6px;
-      font-size: 12px;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .alert-ok  { background: var(--green-l); color: var(--green); border: 1px solid #b6dfc8; }
-    .alert-err { background: var(--red-l); color: var(--red); border: 1px solid #f0c0bb; }
-    .alert-info { background: var(--blue-l); color: var(--blue); border: 1px solid #b0ccdf; }
+    /* ALERT */
+    .alert { padding:9px 13px; border-radius:6px; font-size:12px; margin-bottom:12px; display:flex; align-items:center; gap:7px; }
+    .alert-ok   { background:var(--green-l); color:var(--green); border:1px solid #b6dfc8; }
+    .alert-err  { background:var(--red-l); color:var(--red); border:1px solid #f0c0bb; }
+    .alert-info { background:var(--blue-l); color:var(--blue); border:1px solid #b0ccdf; }
 
-    /* ── TABLE ──────────────────────────────────────────────── */
-    .tbl-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
-    th {
-      text-align: left;
-      padding: 10px 14px;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: .7px;
-      color: var(--muted);
-      background: #fdfcfb;
-      border-bottom: 1px solid var(--border);
-    }
-    td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
-    tr:last-child td { border-bottom: none; }
-    tbody tr:hover td { background: #fdfcfb; }
+    /* TABLE */
+    .tbl-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th { text-align:left; padding:9px 13px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.6px; color:var(--muted); background:#fdfcfb; border-bottom:1px solid var(--border); }
+    td { padding:10px 13px; border-bottom:1px solid var(--border); vertical-align:middle; }
+    tr:last-child td { border-bottom:none; }
+    tbody tr:hover td { background:#fdfcfb; }
 
-    /* ── BADGE ──────────────────────────────────────────────── */
-    .badge {
-      display: inline-block;
-      padding: 2px 9px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    .b-green  { background: var(--green-l); color: var(--green); }
-    .b-red    { background: var(--red-l); color: var(--red); }
-    .b-yellow { background: var(--yellow-l); color: var(--yellow); }
-    .b-blue   { background: var(--blue-l); color: var(--blue); }
-    .b-beige  { background: var(--accent-l); color: var(--accent); }
+    /* BADGE */
+    .badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:600; }
+    .b-green  { background:var(--green-l); color:var(--green); }
+    .b-red    { background:var(--red-l); color:var(--red); }
+    .b-yellow { background:var(--yellow-l); color:var(--yellow); }
+    .b-blue   { background:var(--blue-l); color:var(--blue); }
+    .b-beige  { background:var(--accent-l); color:var(--accent); }
+    .b-purple { background:var(--purple-l); color:var(--purple); }
 
-    /* ── ID CHIP ────────────────────────────────────────────── */
-    .id-chip {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--muted);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      padding: 2px 7px;
-      border-radius: 4px;
-    }
+    /* ID CHIP */
+    .id-chip { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); background:var(--bg); border:1px solid var(--border); padding:2px 6px; border-radius:4px; }
 
-    /* ── SCORE BAR ──────────────────────────────────────────── */
-    .sbar { display: flex; align-items: center; gap: 8px; min-width: 120px; }
-    .sbar-track { flex: 1; height: 5px; background: var(--border); border-radius: 3px; }
-    .sbar-fill { height: 100%; border-radius: 3px; transition: width .3s; }
+    /* SCORE BAR */
+    .sbar { display:flex; align-items:center; gap:7px; min-width:110px; }
+    .sbar-track { flex:1; height:5px; background:var(--border); border-radius:3px; }
+    .sbar-fill { height:100%; border-radius:3px; transition:width .3s; }
 
-    /* ── EMPTY / LOADING ────────────────────────────────────── */
-    .empty { text-align: center; padding: 36px; color: var(--muted); font-size: 13px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .spinner {
-      width: 18px; height: 18px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-      display: inline-block;
-      vertical-align: middle;
-      margin-right: 8px;
-    }
+    /* EMPTY / LOADING */
+    .empty { text-align:center; padding:32px; color:var(--muted); font-size:13px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .spinner { width:16px; height:16px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; margin-right:7px; }
 
-    /* ── RESPONSE BOX ───────────────────────────────────────── */
-    .resp {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 14px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      line-height: 1.7;
-      color: var(--muted);
-      min-height: 60px;
-      max-height: 220px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-    .resp.ok  { color: var(--green); border-color: #b6dfc8; background: var(--green-l); }
-    .resp.err { color: var(--red);   border-color: #f0c0bb; background: var(--red-l); }
+    /* RESP BOX */
+    .resp { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:12px; font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.7; color:var(--muted); min-height:50px; max-height:200px; overflow-y:auto; white-space:pre-wrap; word-break:break-all; }
+    .resp.ok  { color:var(--green); border-color:#b6dfc8; background:var(--green-l); }
+    .resp.err { color:var(--red);   border-color:#f0c0bb; background:var(--red-l); }
 
-    /* ── DIVIDER ────────────────────────────────────────────── */
-    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+    /* SEED LOG */
+    #seed-log { background:#1a1714; border-radius:6px; padding:14px 16px; font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.8; color:#a8c488; min-height:120px; max-height:300px; overflow-y:auto; }
+    #seed-log .err { color:#f08080; }
+    #seed-log .info { color:#7ecfcf; }
 
-    /* ── FILTER ROW ─────────────────────────────────────────── */
-    .filter-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 20px;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-    }
-    .filter-row input { max-width: 180px; }
-    .filter-row label { font-size: 12px; color: var(--muted); font-weight: 500; }
+    /* RISK GAUGE */
+    .risk-bar { height:8px; border-radius:4px; background:var(--border); overflow:hidden; margin-top:4px; }
+    .risk-fill { height:100%; border-radius:4px; transition:width .5s; }
+
+    /* SLIDER */
+    input[type=range] { -webkit-appearance:none; width:100%; height:4px; border-radius:2px; background:var(--border); outline:none; padding:0; border:none; box-shadow:none; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:var(--purple); cursor:pointer; border:2px solid #fff; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+    input[type=range]:focus { box-shadow:none; }
+
+    /* PROGRESS RING */
+    .ring-wrap { display:flex; flex-direction:column; align-items:center; gap:6px; }
+    .ring-val { font-family:'Lora',serif; font-size:22px; color:var(--purple); }
+    .ring-lbl { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.6px; }
+
+    .divider { height:1px; background:var(--border); margin:16px 0; }
   </style>
 </head>
 <body>
@@ -342,13 +179,12 @@
 <div id="topbar">
   <div id="topbar-inner">
     <div id="logo">EduSmart <span>ERP</span></div>
-
     <div id="tabs">
       <button class="tab active" onclick="go('dashboard')" id="t-dashboard">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         Accueil
       </button>
-      <div class="tab-sep"></div>
+      <div class="tsep"></div>
       <button class="tab" onclick="go('students')" id="t-students">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
         Étudiants
@@ -365,7 +201,7 @@
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
         Cours
       </button>
-      <div class="tab-sep"></div>
+      <div class="tsep"></div>
       <button class="tab" onclick="go('enrollments')" id="t-enrollments">
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         Inscriptions
@@ -378,8 +214,16 @@
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
         Audit
       </button>
+      <div class="tsep"></div>
+      <button class="tab tab-ia" onclick="go('ia')" id="t-ia">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        Dropout IA
+      </button>
+      <button class="tab tab-seed" onclick="go('seed')" id="t-seed">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+        Seed data
+      </button>
     </div>
-
     <div id="auth-chip" onclick="go('login')">
       <div id="auth-dot"></div>
       <span id="auth-label">Connexion</span>
@@ -390,13 +234,10 @@
 <!-- MAIN -->
 <div id="main">
 
-  <!-- ── DASHBOARD ─────────────────────────────────────────── -->
+  <!-- ── DASHBOARD ──────────────────────────────────────────── -->
   <div class="page active" id="p-dashboard">
-    <div class="ptitle">
-      <h2>Tableau de bord</h2>
-      <p>Vue d'ensemble du système académique</p>
-    </div>
-    <div class="g4" id="stats-row">
+    <div class="ptitle"><h2>Tableau de bord</h2><p>Vue d'ensemble du système académique</p></div>
+    <div class="g4">
       <div class="stat"><div class="stat-val" id="st-students">—</div><div class="stat-lbl">Étudiants</div></div>
       <div class="stat"><div class="stat-val" id="st-teachers">—</div><div class="stat-lbl">Formateurs</div></div>
       <div class="stat"><div class="stat-val" id="st-courses">—</div><div class="stat-lbl">Cours</div></div>
@@ -408,16 +249,22 @@
         <div class="card-body" id="dash-enrollments"><div class="empty">Connectez-vous pour charger</div></div>
       </div>
       <div class="card">
-        <div class="card-head"><h3>Derniers cours créés</h3><button class="btn btn-ghost" onclick="loadDashboard()"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>Rafraîchir</button></div>
+        <div class="card-head">
+          <h3>Derniers cours</h3>
+          <button class="btn btn-ghost" onclick="loadDashboard()">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Rafraîchir
+          </button>
+        </div>
         <div class="card-body" id="dash-courses"><div class="empty">—</div></div>
       </div>
     </div>
   </div>
 
-  <!-- ── LOGIN ─────────────────────────────────────────────── -->
+  <!-- ── LOGIN ──────────────────────────────────────────────── -->
   <div class="page" id="p-login">
-    <div class="ptitle"><h2>Connexion</h2><p>Authentification administrateur</p></div>
-    <div class="card" style="max-width:440px">
+    <div class="ptitle"><h2>Connexion</h2></div>
+    <div class="card" style="max-width:420px">
       <div class="card-head"><h3>Identifiants</h3></div>
       <div class="card-body">
         <div id="login-alert"></div>
@@ -433,9 +280,9 @@
     </div>
   </div>
 
-  <!-- ── STUDENTS ──────────────────────────────────────────── -->
+  <!-- ── STUDENTS ───────────────────────────────────────────── -->
   <div class="page" id="p-students">
-    <div class="ptitle"><h2>Étudiants</h2><p>Création et consultation des profils</p></div>
+    <div class="ptitle"><h2>Étudiants</h2></div>
     <div class="g2" style="align-items:start">
       <div class="card">
         <div class="card-head"><h3>Nouvel étudiant</h3></div>
@@ -445,28 +292,25 @@
             <div><label class="fl">Prénom</label><input type="text" id="s-fn" placeholder="Marie"></div>
             <div><label class="fl">Nom</label><input type="text" id="s-ln" placeholder="Dupont"></div>
           </div>
-          <div class="fg" style="margin-top:12px">
-            <div><label class="fl">Email</label><input type="email" id="s-email" placeholder="marie@etu.edusmart.com"></div>
+          <div class="fg" style="margin-top:11px">
+            <div><label class="fl">Email</label><input type="email" id="s-email"></div>
             <div><label class="fl">Mot de passe</label><input type="password" id="s-pw" placeholder="••••••••"></div>
             <div><label class="fl">Téléphone</label><input type="text" id="s-phone" placeholder="Optionnel"></div>
           </div>
-          <div class="btn-row"><button class="btn btn-primary" onclick="createStudent()">Créer l'étudiant</button></div>
-          <div style="margin-top:14px"><div class="resp" id="s-resp">—</div></div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="createStudent()">Créer</button></div>
+          <div style="margin-top:12px"><div class="resp" id="s-resp">—</div></div>
         </div>
       </div>
       <div class="card">
-        <div class="card-head">
-          <h3>Liste des étudiants</h3>
-          <button class="btn btn-outline" onclick="loadStudents()">Charger</button>
-        </div>
+        <div class="card-head"><h3>Liste</h3><button class="btn btn-outline" onclick="loadStudents()">Charger</button></div>
         <div id="s-list"><div class="empty">Cliquez sur Charger</div></div>
       </div>
     </div>
   </div>
 
-  <!-- ── TEACHERS ──────────────────────────────────────────── -->
+  <!-- ── TEACHERS ───────────────────────────────────────────── -->
   <div class="page" id="p-teachers">
-    <div class="ptitle"><h2>Formateurs</h2><p>Gestion du corps enseignant</p></div>
+    <div class="ptitle"><h2>Formateurs</h2></div>
     <div class="g2" style="align-items:start">
       <div class="card">
         <div class="card-head"><h3>Nouveau formateur</h3></div>
@@ -476,28 +320,25 @@
             <div><label class="fl">Prénom</label><input type="text" id="t-fn" placeholder="Jean"></div>
             <div><label class="fl">Nom</label><input type="text" id="t-ln" placeholder="Martin"></div>
           </div>
-          <div class="fg" style="margin-top:12px">
-            <div><label class="fl">Email</label><input type="email" id="t-email" placeholder="jean@edusmart.com"></div>
+          <div class="fg" style="margin-top:11px">
+            <div><label class="fl">Email</label><input type="email" id="t-email"></div>
             <div><label class="fl">Mot de passe</label><input type="password" id="t-pw" placeholder="••••••••"></div>
             <div><label class="fl">Spécialité</label><input type="text" id="t-spec" placeholder="ex : Informatique"></div>
           </div>
-          <div class="btn-row"><button class="btn btn-primary" onclick="createTeacher()">Créer le formateur</button></div>
-          <div style="margin-top:14px"><div class="resp" id="t-resp">—</div></div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="createTeacher()">Créer</button></div>
+          <div style="margin-top:12px"><div class="resp" id="t-resp">—</div></div>
         </div>
       </div>
       <div class="card">
-        <div class="card-head">
-          <h3>Liste des formateurs</h3>
-          <button class="btn btn-outline" onclick="loadTeachers()">Charger</button>
-        </div>
+        <div class="card-head"><h3>Liste</h3><button class="btn btn-outline" onclick="loadTeachers()">Charger</button></div>
         <div id="t-list"><div class="empty">Cliquez sur Charger</div></div>
       </div>
     </div>
   </div>
 
-  <!-- ── SEMESTERS ─────────────────────────────────────────── -->
+  <!-- ── SEMESTERS ──────────────────────────────────────────── -->
   <div class="page" id="p-semesters">
-    <div class="ptitle"><h2>Semestres</h2><p>Planification académique</p></div>
+    <div class="ptitle"><h2>Semestres</h2></div>
     <div class="g2" style="align-items:start">
       <div class="card">
         <div class="card-head"><h3>Nouveau semestre</h3></div>
@@ -505,27 +346,24 @@
           <div id="sem-alert"></div>
           <div class="fg">
             <div><label class="fl">Nom</label><input type="text" id="sem-name" placeholder="S1 2025-2026"></div>
-            <div><label class="fl">Date de début</label><input type="datetime-local" id="sem-start"></div>
-            <div><label class="fl">Date de fin</label><input type="datetime-local" id="sem-end"></div>
+            <div><label class="fl">Début</label><input type="datetime-local" id="sem-start"></div>
+            <div><label class="fl">Fin</label><input type="datetime-local" id="sem-end"></div>
             <div><label class="fl">Deadline inscription</label><input type="datetime-local" id="sem-dl"></div>
           </div>
-          <div class="btn-row"><button class="btn btn-primary" onclick="createSemester()">Créer le semestre</button></div>
-          <div style="margin-top:14px"><div class="resp" id="sem-resp">—</div></div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="createSemester()">Créer</button></div>
+          <div style="margin-top:12px"><div class="resp" id="sem-resp">—</div></div>
         </div>
       </div>
       <div class="card">
-        <div class="card-head">
-          <h3>Liste des semestres</h3>
-          <button class="btn btn-outline" onclick="loadSemesters()">Charger</button>
-        </div>
+        <div class="card-head"><h3>Liste</h3><button class="btn btn-outline" onclick="loadSemesters()">Charger</button></div>
         <div id="sem-list"><div class="empty">Cliquez sur Charger</div></div>
       </div>
     </div>
   </div>
 
-  <!-- ── COURSES ───────────────────────────────────────────── -->
+  <!-- ── COURSES ────────────────────────────────────────────── -->
   <div class="page" id="p-courses">
-    <div class="ptitle"><h2>Cours</h2><p>Catalogue des modules de formation</p></div>
+    <div class="ptitle"><h2>Cours</h2></div>
     <div class="g2" style="align-items:start">
       <div class="card">
         <div class="card-head"><h3>Nouveau cours</h3></div>
@@ -535,38 +373,47 @@
             <div><label class="fl">Code</label><input type="text" id="c-code" placeholder="INF401"></div>
             <div><label class="fl">Nom</label><input type="text" id="c-name" placeholder="Algorithmes"></div>
             <div><label class="fl">Crédits</label><input type="number" id="c-credits" value="3"></div>
-            <div><label class="fl">Quota (places)</label><input type="number" id="c-quota" value="30"></div>
-            <div><label class="fl">ID Formateur</label><input type="number" id="c-teacher" placeholder="1"></div>
-            <div><label class="fl">ID Semestre</label><input type="number" id="c-sem" placeholder="1"></div>
+            <div><label class="fl">Quota</label><input type="number" id="c-quota" value="30"></div>
+            <div>
+              <label class="fl">Formateur</label>
+              <select id="c-teacher"><option value="">— sélectionner —</option></select>
+            </div>
+            <div>
+              <label class="fl">Semestre</label>
+              <select id="c-sem"><option value="">— sélectionner —</option></select>
+            </div>
           </div>
-          <div class="btn-row"><button class="btn btn-primary" onclick="createCourse()">Créer le cours</button></div>
-          <div style="margin-top:14px"><div class="resp" id="c-resp">—</div></div>
+          <div class="btn-row"><button class="btn btn-primary" onclick="createCourse()">Créer</button></div>
+          <div style="margin-top:12px"><div class="resp" id="c-resp">—</div></div>
         </div>
       </div>
       <div class="card">
-        <div class="card-head">
-          <h3>Liste des cours</h3>
-          <button class="btn btn-outline" onclick="loadCourses()">Charger</button>
-        </div>
+        <div class="card-head"><h3>Liste</h3><button class="btn btn-outline" onclick="loadCourses()">Charger</button></div>
         <div id="c-list"><div class="empty">Cliquez sur Charger</div></div>
       </div>
     </div>
   </div>
 
-  <!-- ── ENROLLMENTS ───────────────────────────────────────── -->
+  <!-- ── ENROLLMENTS ────────────────────────────────────────── -->
   <div class="page" id="p-enrollments">
-    <div class="ptitle"><h2>Inscriptions</h2><p>Gestion des inscriptions aux cours</p></div>
-    <div class="g2" style="align-items:start;margin-bottom:16px">
+    <div class="ptitle"><h2>Inscriptions</h2></div>
+    <div class="g2" style="align-items:start;margin-bottom:14px">
       <div class="card">
         <div class="card-head"><h3>Inscrire un étudiant</h3></div>
         <div class="card-body">
           <div id="e-alert"></div>
-          <div class="fg c2">
-            <div><label class="fl">ID Étudiant</label><input type="number" id="e-sid" placeholder="1"></div>
-            <div><label class="fl">ID Cours</label><input type="number" id="e-cid" placeholder="1"></div>
+          <div class="fg">
+            <div>
+              <label class="fl">Étudiant</label>
+              <select id="e-sid"><option value="">— sélectionner —</option></select>
+            </div>
+            <div>
+              <label class="fl">Cours</label>
+              <select id="e-cid"><option value="">— sélectionner —</option></select>
+            </div>
           </div>
           <div class="btn-row"><button class="btn btn-primary" onclick="createEnrollment()">Inscrire</button></div>
-          <div style="margin-top:14px"><div class="resp" id="e-resp">—</div></div>
+          <div style="margin-top:12px"><div class="resp" id="e-resp">—</div></div>
         </div>
       </div>
       <div class="card">
@@ -590,9 +437,9 @@
     <div class="card">
       <div class="card-head">
         <h3>Liste des inscriptions</h3>
-        <div style="display:flex;gap:8px;align-items:center">
-          <input type="number" id="fe-sid" placeholder="Filtrer étudiant" style="width:150px;padding:5px 10px;font-size:12px">
-          <input type="number" id="fe-cid" placeholder="Filtrer cours" style="width:130px;padding:5px 10px;font-size:12px">
+        <div style="display:flex;gap:7px;align-items:center">
+          <input type="number" id="fe-sid" placeholder="ID étudiant" style="width:140px;padding:5px 9px;font-size:12px">
+          <input type="number" id="fe-cid" placeholder="ID cours" style="width:120px;padding:5px 9px;font-size:12px">
           <button class="btn btn-outline" onclick="loadEnrollments()">Charger</button>
         </div>
       </div>
@@ -600,10 +447,10 @@
     </div>
   </div>
 
-  <!-- ── GRADES ────────────────────────────────────────────── -->
+  <!-- ── GRADES ─────────────────────────────────────────────── -->
   <div class="page" id="p-grades">
-    <div class="ptitle"><h2>Notes</h2><p>Attribution et modification des évaluations</p></div>
-    <div class="g2" style="align-items:start;margin-bottom:16px">
+    <div class="ptitle"><h2>Notes</h2></div>
+    <div class="g2" style="align-items:start;margin-bottom:14px">
       <div class="card">
         <div class="card-head"><h3>Attribuer une note</h3></div>
         <div class="card-body">
@@ -614,7 +461,7 @@
             <div><label class="fl">Commentaire</label><input type="text" id="g-comment" placeholder="Optionnel"></div>
           </div>
           <div class="btn-row"><button class="btn btn-primary" onclick="createGrade()">Attribuer</button></div>
-          <div style="margin-top:14px"><div class="resp" id="g-resp">—</div></div>
+          <div style="margin-top:12px"><div class="resp" id="g-resp">—</div></div>
         </div>
       </div>
       <div class="card">
@@ -623,7 +470,7 @@
           <div class="fg">
             <div><label class="fl">ID Note</label><input type="number" id="g-uid" placeholder="1"></div>
             <div><label class="fl">Nouvelle note (/20)</label><input type="number" id="g-uscore" min="0" max="20" step="0.5"></div>
-            <div><label class="fl">Commentaire</label><input type="text" id="g-ucomment" placeholder="Optionnel"></div>
+            <div><label class="fl">Commentaire</label><input type="text" id="g-ucomment"></div>
           </div>
           <div class="btn-row"><button class="btn btn-primary" onclick="updateGrade()">Modifier</button></div>
         </div>
@@ -632,8 +479,8 @@
     <div class="card">
       <div class="card-head">
         <h3>Liste des notes</h3>
-        <div style="display:flex;gap:8px;align-items:center">
-          <input type="number" id="fg-eid" placeholder="ID inscription" style="width:160px;padding:5px 10px;font-size:12px">
+        <div style="display:flex;gap:7px;align-items:center">
+          <input type="number" id="fg-eid" placeholder="ID inscription" style="width:160px;padding:5px 9px;font-size:12px">
           <button class="btn btn-outline" onclick="loadGrades()">Charger</button>
         </div>
       </div>
@@ -641,15 +488,123 @@
     </div>
   </div>
 
-  <!-- ── AUDIT ─────────────────────────────────────────────── -->
+  <!-- ── AUDIT ──────────────────────────────────────────────── -->
   <div class="page" id="p-audit">
     <div class="ptitle"><h2>Audit</h2><p>Journal des opérations système</p></div>
     <div class="card">
-      <div class="card-head">
-        <h3>100 dernières opérations</h3>
-        <button class="btn btn-outline" onclick="loadAudit()">Charger</button>
-      </div>
+      <div class="card-head"><h3>100 dernières opérations</h3><button class="btn btn-outline" onclick="loadAudit()">Charger</button></div>
       <div id="audit-list"><div class="empty">Cliquez sur Charger</div></div>
+    </div>
+  </div>
+
+  <!-- ── IA DROPOUT ─────────────────────────────────────────── -->
+  <div class="page" id="p-ia">
+    <div class="ptitle">
+      <h2>Prédiction de décrochage</h2>
+      <p>Modèle Random Forest entraîné sur les données du Data Warehouse — lancez l'ETL avant d'utiliser</p>
+    </div>
+
+    <div class="g2" style="align-items:start;margin-bottom:14px">
+      <div class="card">
+        <div class="card-head"><h3>Paramètres du modèle</h3></div>
+        <div class="card-body">
+          <div class="fg">
+            <div>
+              <label class="fl">Seuil de risque — <span id="threshold-val" style="color:var(--purple);font-weight:700">0.35</span></label>
+              <input type="range" id="ia-threshold" min="0.1" max="0.8" step="0.05" value="0.35"
+                     oninput="document.getElementById('threshold-val').textContent=this.value">
+              <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:3px">
+                <span>0.1 — Sensible</span><span>0.8 — Strict</span>
+              </div>
+            </div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-purple" onclick="runPredict()">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              Lancer la prédiction
+            </button>
+          </div>
+          <div id="ia-alert" style="margin-top:12px"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>Résumé</h3></div>
+        <div class="card-body" id="ia-summary">
+          <div class="empty">Lancez une prédiction pour voir les résultats</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <h3>Résultats détaillés</h3>
+        <div style="display:flex;gap:7px">
+          <button class="btn btn-ghost" id="ia-filter-all"    onclick="iaFilter('all')"    style="color:var(--text)">Tous</button>
+          <button class="btn btn-ghost" id="ia-filter-risk"   onclick="iaFilter('risk')"   style="color:var(--red)">À risque</button>
+          <button class="btn btn-ghost" id="ia-filter-safe"   onclick="iaFilter('safe')"   style="color:var(--green)">Sains</button>
+        </div>
+      </div>
+      <div id="ia-results"><div class="empty">—</div></div>
+    </div>
+  </div>
+
+  <!-- ── SEED DATA ──────────────────────────────────────────── -->
+  <div class="page" id="p-seed">
+    <div class="ptitle">
+      <h2>Génération de données</h2>
+      <p>Remplace toutes les données existantes par des données Faker — irréversible</p>
+    </div>
+
+    <div class="g2" style="align-items:start">
+      <div class="card">
+        <div class="card-head"><h3>Paramètres</h3></div>
+        <div class="card-body">
+          <div id="seed-alert"></div>
+          <div class="fg c2">
+            <div>
+              <label class="fl">Étudiants</label>
+              <input type="number" id="seed-students" value="30" min="1" max="500">
+            </div>
+            <div>
+              <label class="fl">Formateurs</label>
+              <input type="number" id="seed-teachers" value="5" min="1" max="20">
+            </div>
+            <div>
+              <label class="fl">Semestres</label>
+              <input type="number" id="seed-semesters" value="3" min="1" max="10">
+            </div>
+            <div>
+              <label class="fl">Logs d'audit</label>
+              <input type="number" id="seed-audit" value="30" min="0" max="200">
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div style="background:var(--red-l);border:1px solid #f0c0bb;border-radius:6px;padding:11px 14px;font-size:12px;color:var(--red)">
+            ⚠️ Cette action supprime <strong>toutes les données existantes</strong> (étudiants, cours, notes, inscriptions) avant de générer de nouvelles données.
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-green" onclick="launchSeed()" id="seed-btn">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+              Générer les données
+            </button>
+            <button class="btn btn-ghost" onclick="checkSeedStatus()">Vérifier l'état</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Journal d'exécution</h3>
+          <button class="btn btn-ghost" onclick="document.getElementById('seed-log').innerHTML=''">Effacer</button>
+        </div>
+        <div class="card-body" style="padding:0">
+          <div id="seed-log"><span class="info">En attente...</span></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -658,6 +613,7 @@
 <script>
 const API = 'http://localhost:8000/api/v1';
 let TOKEN = localStorage.getItem('edusmart_token') || '';
+let iaPredictions = [];
 
 // ── NAV ──────────────────────────────────────────────────────
 function go(name) {
@@ -666,6 +622,8 @@ function go(name) {
   document.getElementById('p-' + name).classList.add('active');
   const tab = document.getElementById('t-' + name);
   if (tab) tab.classList.add('active');
+  if (name === 'courses'     && TOKEN) loadCourseSelects();
+  if (name === 'enrollments' && TOKEN) loadEnrollmentSelects();
 }
 
 // ── AUTH UI ──────────────────────────────────────────────────
@@ -677,12 +635,11 @@ function setAuthUI(ok, label) {
 }
 
 // ── HELPERS ──────────────────────────────────────────────────
-function h(json = true) {
+function h(json=true) {
   const heads = { Authorization: 'Bearer ' + TOKEN };
   if (json) heads['Content-Type'] = 'application/json';
   return heads;
 }
-
 async function api(method, path, body) {
   const opts = { method, headers: h(!!body) };
   if (body) opts.body = JSON.stringify(body);
@@ -691,21 +648,18 @@ async function api(method, path, body) {
   if (!res.ok) throw data;
   return data;
 }
-
-function alert_(id, msg, type = 'ok') {
+function alert_(id, msg, type='ok') {
   const el = document.getElementById(id);
   if (!el) return;
   el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
-  setTimeout(() => el.innerHTML = '', 4000);
+  setTimeout(() => el.innerHTML = '', 5000);
 }
-
-function resp(id, data, err = false) {
+function resp(id, data, err=false) {
   const el = document.getElementById(id);
   if (!el) return;
   el.className = 'resp ' + (err ? 'err' : 'ok');
   el.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
 }
-
 function loading(id) {
   document.getElementById(id).innerHTML = '<div class="empty"><span class="spinner"></span>Chargement...</div>';
 }
@@ -716,7 +670,7 @@ async function login() {
   form.append('username', document.getElementById('email').value);
   form.append('password', document.getElementById('password').value);
   try {
-    const res = await fetch(API + '/auth/login', { method: 'POST', body: form });
+    const res = await fetch(API + '/auth/login', { method:'POST', body:form });
     const d = await res.json();
     if (d.access_token) {
       TOKEN = d.access_token;
@@ -725,14 +679,12 @@ async function login() {
       localStorage.setItem('edusmart_email', email);
       setAuthUI(true, email.split('@')[0]);
       alert_('login-alert', 'Connexion réussie');
-      loadDashboard();
-      go('dashboard');
+      loadDashboard(); go('dashboard');
     } else {
       alert_('login-alert', d.detail || 'Erreur', 'err');
     }
   } catch { alert_('login-alert', 'API inaccessible', 'err'); }
 }
-
 function logout() {
   TOKEN = ''; localStorage.removeItem('edusmart_token');
   setAuthUI(false); alert_('login-alert', 'Déconnecté', 'info');
@@ -743,312 +695,448 @@ async function loadDashboard() {
   if (!TOKEN) return;
   try {
     const [students, teachers, courses, enrollments] = await Promise.all([
-      api('GET', '/students'), api('GET', '/teachers'),
-      api('GET', '/courses'),  api('GET', '/enrollments'),
+      api('GET','/students'), api('GET','/teachers'),
+      api('GET','/courses'),  api('GET','/enrollments'),
     ]);
-    document.getElementById('st-students').textContent = students.length;
-    document.getElementById('st-teachers').textContent = teachers.length;
-    document.getElementById('st-courses').textContent = courses.length;
+    document.getElementById('st-students').textContent    = students.length;
+    document.getElementById('st-teachers').textContent    = teachers.length;
+    document.getElementById('st-courses').textContent     = courses.length;
     document.getElementById('st-enrollments').textContent = enrollments.length;
 
-    const count = s => enrollments.filter(e => e.status === s).length;
-    const pending = count('en_attente'), valid = count('validee'), cancel = count('annulee');
-
+    const cnt = s => enrollments.filter(e => e.status === s).length;
     document.getElementById('dash-enrollments').innerHTML = `
-      <div style="display:grid;gap:10px">
-        ${[
-          ['En attente', pending, 'b-yellow'],
-          ['Validées',   valid,   'b-green'],
-          ['Annulées',   cancel,  'b-red'],
-        ].map(([lbl, n, cls]) => `
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid var(--border);border-radius:6px">
-            <span style="font-size:13px;color:var(--muted)">${lbl}</span>
-            <span class="badge ${cls}" style="font-size:13px;padding:3px 12px">${n}</span>
-          </div>`).join('')}
+      <div style="display:grid;gap:9px">
+        ${[['En attente',cnt('en_attente'),'b-yellow'],['Validées',cnt('validee'),'b-green'],['Annulées',cnt('annulee'),'b-red']].map(([l,n,c])=>`
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 13px;border:1px solid var(--border);border-radius:6px">
+          <span style="font-size:13px;color:var(--muted)">${l}</span>
+          <span class="badge ${c}" style="font-size:13px;padding:3px 11px">${n}</span>
+        </div>`).join('')}
       </div>`;
-
     document.getElementById('dash-courses').innerHTML = `
       <div class="tbl-wrap"><table>
         <thead><tr><th>Code</th><th>Nom</th><th>Quota</th></tr></thead>
-        <tbody>${courses.slice(-5).reverse().map(c => `
-          <tr>
-            <td><span class="badge b-beige">${c.code}</span></td>
-            <td>${c.name}</td>
-            <td style="color:var(--muted)">${c.quota} places</td>
-          </tr>`).join('')}
-        </tbody>
-      </table></div>`;
+        <tbody>${courses.slice(-5).reverse().map(c=>`
+          <tr><td><span class="badge b-beige">${c.code}</span></td><td>${c.name}</td><td style="color:var(--muted)">${c.quota} places</td></tr>`).join('')}
+        </tbody></table></div>`;
   } catch(e) {
-    document.getElementById('dash-enrollments').innerHTML = '<div class="empty" style="color:var(--red)">Erreur de chargement — vérifiez la connexion API</div>';
+    document.getElementById('dash-enrollments').innerHTML = `<div class="empty" style="color:var(--red)">Erreur — vérifiez la connexion API</div>`;
   }
+}
+
+// ── DYNAMIC SELECTS ──────────────────────────────────────────
+async function loadCourseSelects() {
+  try {
+    const [teachers, semesters] = await Promise.all([api('GET','/teachers'), api('GET','/semesters')]);
+    document.getElementById('c-teacher').innerHTML = teachers.map(t =>
+      `<option value="${t.id}">#${t.id} — ${t.first_name} ${t.last_name} (${t.specialty||'—'})</option>`).join('');
+    document.getElementById('c-sem').innerHTML = semesters.map(s =>
+      `<option value="${s.id}">#${s.id} — ${s.name}</option>`).join('');
+  } catch(e) {}
+}
+
+async function loadEnrollmentSelects() {
+  try {
+    const [students, courses] = await Promise.all([api('GET','/students'), api('GET','/courses')]);
+    document.getElementById('e-sid').innerHTML = students.map(s =>
+      `<option value="${s.id}">#${s.id} — ${s.first_name} ${s.last_name}</option>`).join('');
+    document.getElementById('e-cid').innerHTML = courses.map(c =>
+      `<option value="${c.id}">#${c.id} — ${c.code} ${c.name}</option>`).join('');
+  } catch(e) {}
 }
 
 // ── STUDENTS ─────────────────────────────────────────────────
 async function createStudent() {
   try {
-    const d = await api('POST', '/students', {
-      email: document.getElementById('s-email').value,
-      password: document.getElementById('s-pw').value,
-      first_name: document.getElementById('s-fn').value,
-      last_name: document.getElementById('s-ln').value,
-      phone: document.getElementById('s-phone').value || null,
+    const d = await api('POST','/students',{
+      email:document.getElementById('s-email').value,
+      password:document.getElementById('s-pw').value,
+      first_name:document.getElementById('s-fn').value,
+      last_name:document.getElementById('s-ln').value,
+      phone:document.getElementById('s-phone').value||null,
     });
-    resp('s-resp', d);
-    alert_('s-alert', `Étudiant créé : ${d.first_name} ${d.last_name} — ID ${d.id}`);
-  } catch(e) { resp('s-resp', e, true); alert_('s-alert', e.detail || 'Erreur', 'err'); }
+    resp('s-resp',d); alert_('s-alert',`Étudiant créé : ${d.first_name} ${d.last_name} — ID ${d.id}`);
+  } catch(e) { resp('s-resp',e,true); alert_('s-alert',e.detail||'Erreur','err'); }
 }
-
 async function loadStudents() {
   loading('s-list');
   try {
-    const data = await api('GET', '/students');
-    if (!data.length) { document.getElementById('s-list').innerHTML = '<div class="empty">Aucun étudiant</div>'; return; }
-    document.getElementById('s-list').innerHTML = `
+    const data = await api('GET','/students');
+    if (!data.length) { document.getElementById('s-list').innerHTML='<div class="empty">Aucun étudiant</div>'; return; }
+    document.getElementById('s-list').innerHTML=`
       <div class="tbl-wrap"><table>
-        <thead><tr><th>ID</th><th>Prénom</th><th>Nom</th><th>Email</th><th>Téléphone</th></tr></thead>
-        <tbody>${data.map(s => `<tr>
+        <thead><tr><th>ID</th><th>Prénom</th><th>Nom</th><th>Email</th></tr></thead>
+        <tbody>${data.map(s=>`<tr>
           <td><span class="id-chip">#${s.id}</span></td>
           <td>${s.first_name}</td><td>${s.last_name}</td>
-          <td style="color:var(--muted);font-size:12px">${s.user?.email || '—'}</td>
-          <td style="color:var(--muted)">${s.phone || '—'}</td>
-        </tr>`).join('')}</tbody>
-      </table></div>`;
-  } catch(e) { document.getElementById('s-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+          <td style="color:var(--muted);font-size:12px">${s.user?.email||'—'}</td>
+        </tr>`).join('')}</tbody></table></div>`;
+  } catch(e) { document.getElementById('s-list').innerHTML=`<div class="empty" style="color:var(--red)">${e.detail||'Erreur'}</div>`; }
 }
 
 // ── TEACHERS ─────────────────────────────────────────────────
 async function createTeacher() {
   try {
-    const d = await api('POST', '/teachers', {
-      email: document.getElementById('t-email').value,
-      password: document.getElementById('t-pw').value,
-      first_name: document.getElementById('t-fn').value,
-      last_name: document.getElementById('t-ln').value,
-      specialty: document.getElementById('t-spec').value || null,
+    const d = await api('POST','/teachers',{
+      email:document.getElementById('t-email').value,
+      password:document.getElementById('t-pw').value,
+      first_name:document.getElementById('t-fn').value,
+      last_name:document.getElementById('t-ln').value,
+      specialty:document.getElementById('t-spec').value||null,
     });
-    resp('t-resp', d);
-    alert_('t-alert', `Formateur créé : ${d.first_name} ${d.last_name} — ID ${d.id}`);
-  } catch(e) { resp('t-resp', e, true); alert_('t-alert', e.detail || 'Erreur', 'err'); }
+    resp('t-resp',d); alert_('t-alert',`Formateur créé : ${d.first_name} ${d.last_name} — ID ${d.id}`);
+  } catch(e) { resp('t-resp',e,true); alert_('t-alert',e.detail||'Erreur','err'); }
 }
-
 async function loadTeachers() {
   loading('t-list');
   try {
-    const data = await api('GET', '/teachers');
-    if (!data.length) { document.getElementById('t-list').innerHTML = '<div class="empty">Aucun formateur</div>'; return; }
-    document.getElementById('t-list').innerHTML = `
+    const data = await api('GET','/teachers');
+    if (!data.length) { document.getElementById('t-list').innerHTML='<div class="empty">Aucun formateur</div>'; return; }
+    document.getElementById('t-list').innerHTML=`
       <div class="tbl-wrap"><table>
         <thead><tr><th>ID</th><th>Prénom</th><th>Nom</th><th>Spécialité</th><th>Email</th></tr></thead>
-        <tbody>${data.map(t => `<tr>
+        <tbody>${data.map(t=>`<tr>
           <td><span class="id-chip">#${t.id}</span></td>
           <td>${t.first_name}</td><td>${t.last_name}</td>
-          <td><span class="badge b-blue">${t.specialty || '—'}</span></td>
-          <td style="color:var(--muted);font-size:12px">${t.user?.email || '—'}</td>
-        </tr>`).join('')}</tbody>
-      </table></div>`;
-  } catch(e) { document.getElementById('t-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+          <td><span class="badge b-blue">${t.specialty||'—'}</span></td>
+          <td style="color:var(--muted);font-size:12px">${t.user?.email||'—'}</td>
+        </tr>`).join('')}</tbody></table></div>`;
+  } catch(e) { document.getElementById('t-list').innerHTML=`<div class="empty" style="color:var(--red)">${e.detail||'Erreur'}</div>`; }
 }
 
 // ── SEMESTERS ────────────────────────────────────────────────
 async function createSemester() {
   try {
-    const d = await api('POST', '/semesters', {
-      name: document.getElementById('sem-name').value,
-      start_date: new Date(document.getElementById('sem-start').value).toISOString(),
-      end_date: new Date(document.getElementById('sem-end').value).toISOString(),
-      enroll_deadline: new Date(document.getElementById('sem-dl').value).toISOString(),
+    const d = await api('POST','/semesters',{
+      name:document.getElementById('sem-name').value,
+      start_date:new Date(document.getElementById('sem-start').value).toISOString(),
+      end_date:new Date(document.getElementById('sem-end').value).toISOString(),
+      enroll_deadline:new Date(document.getElementById('sem-dl').value).toISOString(),
     });
-    resp('sem-resp', d);
-    alert_('sem-alert', `Semestre créé : ${d.name} — ID ${d.id}`);
-  } catch(e) { resp('sem-resp', e, true); alert_('sem-alert', e.detail || 'Erreur', 'err'); }
+    resp('sem-resp',d); alert_('sem-alert',`Semestre créé : ${d.name} — ID ${d.id}`);
+  } catch(e) { resp('sem-resp',e,true); alert_('sem-alert',e.detail||'Erreur','err'); }
 }
-
 async function loadSemesters() {
   loading('sem-list');
   try {
-    const data = await api('GET', '/semesters');
-    if (!data.length) { document.getElementById('sem-list').innerHTML = '<div class="empty">Aucun semestre</div>'; return; }
-    document.getElementById('sem-list').innerHTML = `
+    const data = await api('GET','/semesters');
+    if (!data.length) { document.getElementById('sem-list').innerHTML='<div class="empty">Aucun semestre</div>'; return; }
+    document.getElementById('sem-list').innerHTML=`
       <div class="tbl-wrap"><table>
-        <thead><tr><th>ID</th><th>Nom</th><th>Début</th><th>Fin</th><th>Deadline</th></tr></thead>
-        <tbody>${data.map(s => `<tr>
+        <thead><tr><th>ID</th><th>Nom</th><th>Début</th><th>Fin</th></tr></thead>
+        <tbody>${data.map(s=>`<tr>
           <td><span class="id-chip">#${s.id}</span></td>
           <td><strong>${s.name}</strong></td>
           <td style="color:var(--muted)">${new Date(s.start_date).toLocaleDateString('fr-FR')}</td>
           <td style="color:var(--muted)">${new Date(s.end_date).toLocaleDateString('fr-FR')}</td>
-          <td style="font-size:12px">${new Date(s.enroll_deadline).toLocaleDateString('fr-FR')}</td>
-        </tr>`).join('')}</tbody>
-      </table></div>`;
-  } catch(e) { document.getElementById('sem-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+        </tr>`).join('')}</tbody></table></div>`;
+  } catch(e) { document.getElementById('sem-list').innerHTML=`<div class="empty" style="color:var(--red)">${e.detail||'Erreur'}</div>`; }
 }
 
 // ── COURSES ──────────────────────────────────────────────────
 async function createCourse() {
+  const tid = document.getElementById('c-teacher').value;
+  const sid = document.getElementById('c-sem').value;
+  if (!tid || !sid) { alert_('c-alert','Sélectionnez un formateur et un semestre','err'); return; }
   try {
-    const d = await api('POST', '/courses', {
-      code: document.getElementById('c-code').value,
-      name: document.getElementById('c-name').value,
-      credits: parseInt(document.getElementById('c-credits').value),
-      quota: parseInt(document.getElementById('c-quota').value),
-      teacher_id: parseInt(document.getElementById('c-teacher').value),
-      semester_id: parseInt(document.getElementById('c-sem').value),
+    const d = await api('POST','/courses',{
+      code:document.getElementById('c-code').value,
+      name:document.getElementById('c-name').value,
+      credits:parseInt(document.getElementById('c-credits').value),
+      quota:parseInt(document.getElementById('c-quota').value),
+      teacher_id:parseInt(tid), semester_id:parseInt(sid),
     });
-    resp('c-resp', d);
-    alert_('c-alert', `Cours créé : ${d.code} — ID ${d.id}`);
-  } catch(e) { resp('c-resp', e, true); alert_('c-alert', e.detail || 'Erreur', 'err'); }
+    resp('c-resp',d); alert_('c-alert',`Cours créé : ${d.code} — ID ${d.id}`);
+  } catch(e) { resp('c-resp',e,true); alert_('c-alert',e.detail||'Erreur','err'); }
 }
-
 async function loadCourses() {
   loading('c-list');
   try {
-    const data = await api('GET', '/courses');
-    if (!data.length) { document.getElementById('c-list').innerHTML = '<div class="empty">Aucun cours</div>'; return; }
-    document.getElementById('c-list').innerHTML = `
+    const data = await api('GET','/courses');
+    if (!data.length) { document.getElementById('c-list').innerHTML='<div class="empty">Aucun cours</div>'; return; }
+    document.getElementById('c-list').innerHTML=`
       <div class="tbl-wrap"><table>
-        <thead><tr><th>ID</th><th>Code</th><th>Nom</th><th>Crédits</th><th>Quota</th><th>ID Form.</th><th>ID Sem.</th></tr></thead>
-        <tbody>${data.map(c => `<tr>
+        <thead><tr><th>ID</th><th>Code</th><th>Nom</th><th>Crédits</th><th>Quota</th></tr></thead>
+        <tbody>${data.map(c=>`<tr>
           <td><span class="id-chip">#${c.id}</span></td>
           <td><span class="badge b-beige">${c.code}</span></td>
           <td>${c.name}</td>
           <td style="text-align:center">${c.credits}</td>
           <td style="text-align:center">${c.quota}</td>
-          <td style="text-align:center;color:var(--muted)">${c.teacher_id}</td>
-          <td style="text-align:center;color:var(--muted)">${c.semester_id}</td>
-        </tr>`).join('')}</tbody>
-      </table></div>`;
-  } catch(e) { document.getElementById('c-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+        </tr>`).join('')}</tbody></table></div>`;
+  } catch(e) { document.getElementById('c-list').innerHTML=`<div class="empty" style="color:var(--red)">${e.detail||'Erreur'}</div>`; }
 }
 
 // ── ENROLLMENTS ──────────────────────────────────────────────
 async function createEnrollment() {
+  const sid = document.getElementById('e-sid').value;
+  const cid = document.getElementById('e-cid').value;
+  if (!sid||!cid) { alert_('e-alert','Sélectionnez un étudiant et un cours','err'); return; }
   try {
-    const d = await api('POST', '/enrollments', {
-      student_id: parseInt(document.getElementById('e-sid').value),
-      course_id: parseInt(document.getElementById('e-cid').value),
-    });
-    resp('e-resp', d);
-    alert_('e-alert', `Inscription créée — ID ${d.id}, statut : ${d.status}`);
-    loadEnrollments();
-  } catch(e) { resp('e-resp', e, true); alert_('e-alert', e.detail || 'Erreur', 'err'); }
+    const d = await api('POST','/enrollments',{ student_id:parseInt(sid), course_id:parseInt(cid) });
+    resp('e-resp',d); alert_('e-alert',`Inscription créée — ID ${d.id}`); loadEnrollments();
+  } catch(e) { resp('e-resp',e,true); alert_('e-alert',e.detail||'Erreur','err'); }
 }
-
 async function updateEnrollment() {
   const id = document.getElementById('e-uid').value;
   try {
-    const d = await api('PATCH', '/enrollments/' + id, { status: document.getElementById('e-status').value });
-    resp('e-resp', d);
-    alert_('e-alert', `Statut mis à jour → ${d.status}`);
-    loadEnrollments();
-  } catch(e) { resp('e-resp', e, true); alert_('e-alert', e.detail || 'Erreur', 'err'); }
+    const d = await api('PATCH','/enrollments/'+id,{status:document.getElementById('e-status').value});
+    resp('e-resp',d); alert_('e-alert',`Statut → ${d.status}`); loadEnrollments();
+  } catch(e) { resp('e-resp',e,true); alert_('e-alert',e.detail||'Erreur','err'); }
 }
-
 async function loadEnrollments() {
   loading('e-list');
-  let url = '/enrollments';
-  const params = [];
-  const sid = document.getElementById('fe-sid').value;
-  const cid = document.getElementById('fe-cid').value;
-  if (sid) params.push('student_id=' + sid);
-  if (cid) params.push('course_id=' + cid);
-  if (params.length) url += '?' + params.join('&');
+  let url='/enrollments'; const p=[];
+  const sid=document.getElementById('fe-sid').value;
+  const cid=document.getElementById('fe-cid').value;
+  if(sid) p.push('student_id='+sid); if(cid) p.push('course_id='+cid);
+  if(p.length) url+='?'+p.join('&');
   try {
-    const data = await api('GET', url);
-    if (!data.length) { document.getElementById('e-list').innerHTML = '<div class="empty">Aucune inscription</div>'; return; }
-    const sb = s => s === 'validee' ? '<span class="badge b-green">Validée</span>' :
-                    s === 'annulee' ? '<span class="badge b-red">Annulée</span>' :
-                    '<span class="badge b-yellow">En attente</span>';
-    document.getElementById('e-list').innerHTML = `
+    const data = await api('GET',url);
+    if (!data.length) { document.getElementById('e-list').innerHTML='<div class="empty">Aucune inscription</div>'; return; }
+    const sb = s => s==='validee'?'<span class="badge b-green">Validée</span>':s==='annulee'?'<span class="badge b-red">Annulée</span>':'<span class="badge b-yellow">En attente</span>';
+    document.getElementById('e-list').innerHTML=`
       <div class="tbl-wrap"><table>
         <thead><tr><th>ID</th><th>Étudiant</th><th>Cours</th><th>Statut</th><th>Date</th></tr></thead>
-        <tbody>${data.map(e => `<tr>
+        <tbody>${data.map(e=>`<tr>
           <td><span class="id-chip">#${e.id}</span></td>
           <td style="text-align:center">${e.student_id}</td>
           <td style="text-align:center">${e.course_id}</td>
           <td>${sb(e.status)}</td>
           <td style="color:var(--muted);font-size:12px">${new Date(e.enrolled_at).toLocaleDateString('fr-FR')}</td>
-        </tr>`).join('')}</tbody>
-      </table></div>`;
-  } catch(e) { document.getElementById('e-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+        </tr>`).join('')}</tbody></table></div>`;
+  } catch(e) { document.getElementById('e-list').innerHTML=`<div class="empty" style="color:var(--red)">${e.detail||'Erreur'}</div>`; }
 }
 
 // ── GRADES ───────────────────────────────────────────────────
 async function createGrade() {
   try {
-    const d = await api('POST', '/grades', {
-      enrollment_id: parseInt(document.getElementById('g-eid').value),
-      score: parseFloat(document.getElementById('g-score').value),
-      comment: document.getElementById('g-comment').value || null,
+    const d = await api('POST','/grades',{
+      enrollment_id:parseInt(document.getElementById('g-eid').value),
+      score:parseFloat(document.getElementById('g-score').value),
+      comment:document.getElementById('g-comment').value||null,
     });
-    resp('g-resp', d);
-    alert_('g-alert', `Note attribuée : ${d.score}/20 — ID ${d.id}`);
-    loadGrades();
-  } catch(e) { resp('g-resp', e, true); alert_('g-alert', e.detail || 'Erreur', 'err'); }
+    resp('g-resp',d); alert_('g-alert',`Note : ${d.score}/20 — ID ${d.id}`); loadGrades();
+  } catch(e) { resp('g-resp',e,true); alert_('g-alert',e.detail||'Erreur','err'); }
 }
-
 async function updateGrade() {
-  const id = document.getElementById('g-uid').value;
   try {
-    const d = await api('PATCH', '/grades/' + id, {
-      score: parseFloat(document.getElementById('g-uscore').value),
-      comment: document.getElementById('g-ucomment').value || null,
+    const d = await api('PATCH','/grades/'+document.getElementById('g-uid').value,{
+      score:parseFloat(document.getElementById('g-uscore').value),
+      comment:document.getElementById('g-ucomment').value||null,
     });
-    resp('g-resp', d);
-    alert_('g-alert', `Note modifiée → ${d.score}/20`);
-    loadGrades();
-  } catch(e) { resp('g-resp', e, true); alert_('g-alert', e.detail || 'Erreur', 'err'); }
+    resp('g-resp',d); alert_('g-alert',`Note modifiée → ${d.score}/20`); loadGrades();
+  } catch(e) { resp('g-resp',e,true); alert_('g-alert',e.detail||'Erreur','err'); }
 }
-
 async function loadGrades() {
   loading('g-list');
-  let url = '/grades';
-  const eid = document.getElementById('fg-eid').value;
-  if (eid) url += '?enrollment_id=' + eid;
+  let url='/grades';
+  const eid=document.getElementById('fg-eid').value;
+  if(eid) url+='?enrollment_id='+eid;
   try {
-    const data = await api('GET', url);
-    if (!data.length) { document.getElementById('g-list').innerHTML = '<div class="empty">Aucune note</div>'; return; }
-    const sc = s => s >= 16 ? 'b-green' : s >= 10 ? 'b-yellow' : 'b-red';
-    document.getElementById('g-list').innerHTML = `
+    const data = await api('GET',url);
+    if (!data.length) { document.getElementById('g-list').innerHTML='<div class="empty">Aucune note</div>'; return; }
+    const sc = s => s>=16?'b-green':s>=10?'b-yellow':'b-red';
+    document.getElementById('g-list').innerHTML=`
       <div class="tbl-wrap"><table>
-        <thead><tr><th>ID</th><th>ID Inscription</th><th>Note</th><th>Progression</th><th>Commentaire</th><th>Date</th></tr></thead>
-        <tbody>${data.map(g => {
-          const color = g.score >= 16 ? 'var(--green)' : g.score >= 10 ? 'var(--yellow)' : 'var(--red)';
+        <thead><tr><th>ID</th><th>Inscription</th><th>Note</th><th>Progression</th><th>Commentaire</th></tr></thead>
+        <tbody>${data.map(g=>{
+          const color = g.score>=16?'var(--green)':g.score>=10?'var(--yellow)':'var(--red)';
           return `<tr>
             <td><span class="id-chip">#${g.id}</span></td>
             <td style="text-align:center">${g.enrollment_id}</td>
             <td><span class="badge ${sc(g.score)}">${g.score}/20</span></td>
-            <td>
-              <div class="sbar">
-                <div class="sbar-track"><div class="sbar-fill" style="width:${g.score * 5}%;background:${color}"></div></div>
-                <span style="font-size:11px;color:var(--muted);width:28px;text-align:right">${g.score * 5}%</span>
-              </div>
-            </td>
-            <td style="color:var(--muted);font-size:12px">${g.comment || '—'}</td>
-            <td style="color:var(--muted);font-size:12px">${new Date(g.graded_at).toLocaleDateString('fr-FR')}</td>
-          </tr>`;
-        }).join('')}</tbody>
-      </table></div>`;
-  } catch(e) { document.getElementById('g-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+            <td><div class="sbar"><div class="sbar-track"><div class="sbar-fill" style="width:${g.score*5}%;background:${color}"></div></div><span style="font-size:11px;color:var(--muted);width:26px;text-align:right">${g.score*5}%</span></div></td>
+            <td style="color:var(--muted);font-size:12px">${g.comment||'—'}</td>
+          </tr>`;}).join('')}</tbody></table></div>`;
+  } catch(e) { document.getElementById('g-list').innerHTML=`<div class="empty" style="color:var(--red)">${e.detail||'Erreur'}</div>`; }
 }
 
 // ── AUDIT ─────────────────────────────────────────────────────
 async function loadAudit() {
   loading('audit-list');
   try {
-    const data = await api('GET', '/audit');
-    if (!data.length) { document.getElementById('audit-list').innerHTML = '<div class="empty">Aucun log</div>'; return; }
-    document.getElementById('audit-list').innerHTML = `
+    const data = await api('GET','/audit');
+    if (!data.length) { document.getElementById('audit-list').innerHTML='<div class="empty">Aucun log</div>'; return; }
+    document.getElementById('audit-list').innerHTML=`
       <div class="tbl-wrap"><table>
         <thead><tr><th>ID</th><th>Action</th><th>Entité</th><th>ID entité</th><th>Détail</th><th>Date</th></tr></thead>
-        <tbody>${data.map(l => `<tr>
+        <tbody>${data.map(l=>`<tr>
           <td><span class="id-chip">#${l.id}</span></td>
           <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue)">${l.action}</td>
-          <td><span class="badge b-beige">${l.entity || '—'}</span></td>
-          <td style="text-align:center;color:var(--muted)">${l.entity_id || '—'}</td>
-          <td style="color:var(--muted);font-size:12px">${l.detail || '—'}</td>
+          <td><span class="badge b-beige">${l.entity||'—'}</span></td>
+          <td style="text-align:center;color:var(--muted)">${l.entity_id||'—'}</td>
+          <td style="color:var(--muted);font-size:12px">${l.detail||'—'}</td>
           <td style="color:var(--muted);font-size:12px">${new Date(l.created_at).toLocaleString('fr-FR')}</td>
-        </tr>`).join('')}</tbody>
-      </table></div>`;
-  } catch(e) { document.getElementById('audit-list').innerHTML = `<div class="empty" style="color:var(--red)">${e.detail || 'Erreur'}</div>`; }
+        </tr>`).join('')}</tbody></table></div>`;
+  } catch(e) { document.getElementById('audit-list').innerHTML=`<div class="empty" style="color:var(--red)">${e.detail||'Erreur'}</div>`; }
+}
+
+// ── IA DROPOUT ────────────────────────────────────────────────
+async function runPredict() {
+  const threshold = document.getElementById('ia-threshold').value;
+  document.getElementById('ia-results').innerHTML = '<div class="empty"><span class="spinner"></span>Prédiction en cours...</div>';
+  document.getElementById('ia-summary').innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+  document.getElementById('ia-alert').innerHTML = '';
+
+  try {
+    const d = await api('GET', `/predict/dropout?threshold=${threshold}`);
+    iaPredictions = d.predictions;
+
+    const atRisk = d.predictions.filter(p => p.at_risk);
+    const pct    = Math.round(100 * d.at_risk / d.total);
+
+    document.getElementById('ia-summary').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div style="text-align:center;padding:14px;background:var(--purple-l);border-radius:8px;border:1px solid #d4c0f0">
+          <div style="font-family:'Lora',serif;font-size:30px;color:var(--purple)">${d.total}</div>
+          <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:3px">Étudiants analysés</div>
+        </div>
+        <div style="text-align:center;padding:14px;background:var(--red-l);border-radius:8px;border:1px solid #f0c0bb">
+          <div style="font-family:'Lora',serif;font-size:30px;color:var(--red)">${d.at_risk}</div>
+          <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-top:3px">À risque (${pct}%)</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Distribution du risque</div>
+      <div style="display:grid;gap:6px">
+        ${[['Critique','≥ 0.7',d.predictions.filter(p=>p.dropout_prob>=.7).length,'var(--red)'],
+           ['Élevé',   '≥ 0.5',d.predictions.filter(p=>p.dropout_prob>=.5&&p.dropout_prob<.7).length,'#e07020'],
+           ['Modéré',  '≥ 0.35',d.predictions.filter(p=>p.dropout_prob>=.35&&p.dropout_prob<.5).length,'var(--yellow)'],
+           ['Faible',  '< 0.35',d.predictions.filter(p=>p.dropout_prob<.35).length,'var(--green)']
+          ].map(([lbl,range,n,color])=>`
+          <div style="display:flex;align-items:center;gap:10px;font-size:12px">
+            <div style="width:8px;height:8px;border-radius:50%;background:${color};flex-shrink:0"></div>
+            <span style="width:60px;color:var(--text)">${lbl}</span>
+            <span style="color:var(--muted);font-size:11px;width:55px">${range}</span>
+            <div style="flex:1;height:5px;background:var(--border);border-radius:3px">
+              <div style="height:100%;border-radius:3px;background:${color};width:${Math.round(100*n/Math.max(1,d.total))}%;transition:width .5s"></div>
+            </div>
+            <span style="font-weight:600;width:24px;text-align:right">${n}</span>
+          </div>`).join('')}
+      </div>`;
+
+    iaFilter('all');
+  } catch(e) {
+    const msg = e.detail || JSON.stringify(e);
+    document.getElementById('ia-alert').innerHTML = `<div class="alert alert-err">${msg}</div>`;
+    document.getElementById('ia-results').innerHTML = '<div class="empty">Erreur</div>';
+    document.getElementById('ia-summary').innerHTML = '<div class="empty">—</div>';
+  }
+}
+
+function iaFilter(mode) {
+  ['all','risk','safe'].forEach(m => {
+    const btn = document.getElementById('ia-filter-'+m);
+    btn.style.fontWeight = m===mode?'700':'400';
+    btn.style.textDecoration = m===mode?'underline':'none';
+  });
+
+  const list = mode==='risk' ? iaPredictions.filter(p=>p.at_risk)
+             : mode==='safe' ? iaPredictions.filter(p=>!p.at_risk)
+             : iaPredictions;
+
+  if (!list.length) {
+    document.getElementById('ia-results').innerHTML='<div class="empty">Aucun résultat</div>'; return;
+  }
+
+  const levelBadge = l => l==='Critique'?'b-red':l==='Élevé'?'b-yellow':l==='Modéré'?'b-yellow':'b-green';
+  document.getElementById('ia-results').innerHTML=`
+    <div class="tbl-wrap"><table>
+      <thead><tr><th>ID</th><th>Étudiant</th><th>Moy/20</th><th>Taux réussite</th><th>Cours à risque</th><th>P(décrochage)</th><th>Niveau</th></tr></thead>
+      <tbody>${list.map(p=>{
+        const color = p.dropout_prob>=.7?'var(--red)':p.dropout_prob>=.5?'#e07020':p.dropout_prob>=.35?'var(--yellow)':'var(--green)';
+        return `<tr>
+          <td><span class="id-chip">#${p.student_id}</span></td>
+          <td style="font-weight:500">${p.name}</td>
+          <td><span class="badge ${p.avg_score>=10?'b-green':'b-red'}">${p.avg_score}</span></td>
+          <td>
+            <div class="sbar">
+              <div class="sbar-track"><div class="sbar-fill" style="width:${p.pass_rate}%;background:${p.pass_rate>=50?'var(--green)':'var(--red)'}"></div></div>
+              <span style="font-size:11px;color:var(--muted)">${p.pass_rate}%</span>
+            </div>
+          </td>
+          <td style="text-align:center">${p.nb_at_risk}</td>
+          <td>
+            <div class="sbar">
+              <div class="sbar-track"><div class="sbar-fill" style="width:${Math.round(p.dropout_prob*100)}%;background:${color}"></div></div>
+              <span style="font-size:11px;color:var(--muted);font-weight:600">${Math.round(p.dropout_prob*100)}%</span>
+            </div>
+          </td>
+          <td><span class="badge ${levelBadge(p.risk_level)}">${p.risk_level}</span></td>
+        </tr>`;}).join('')}
+      </tbody></table></div>`;
+}
+
+// ── SEED ──────────────────────────────────────────────────────
+let seedPollInterval = null;
+
+function seedLog(msg, type='') {
+  const el = document.getElementById('seed-log');
+  const span = document.createElement('span');
+  span.className = type;
+  span.textContent = '› ' + msg;
+  el.appendChild(span);
+  el.appendChild(document.createElement('br'));
+  el.scrollTop = el.scrollHeight;
+}
+
+async function launchSeed() {
+  if (!TOKEN) { alert_('seed-alert','Connectez-vous d\'abord','err'); return; }
+  const students  = parseInt(document.getElementById('seed-students').value);
+  const teachers  = parseInt(document.getElementById('seed-teachers').value);
+  const semesters = parseInt(document.getElementById('seed-semesters').value);
+  const audit     = parseInt(document.getElementById('seed-audit').value);
+
+  document.getElementById('seed-log').innerHTML = '';
+  document.getElementById('seed-btn').disabled = true;
+  seedLog(`Lancement : ${students} étudiants, ${teachers} formateurs, ${semesters} semestres`, 'info');
+
+  try {
+    await api('POST', `/seed?nb_students=${students}&nb_teachers=${teachers}&nb_semesters=${semesters}&nb_audit=${audit}`);
+    seedLog('Seed démarré en arrière-plan...', 'info');
+    pollSeed();
+  } catch(e) {
+    seedLog('Erreur : ' + (e.detail||JSON.stringify(e)), 'err');
+    document.getElementById('seed-btn').disabled = false;
+  }
+}
+
+let lastLogCount = 0;
+function pollSeed() {
+  if (seedPollInterval) clearInterval(seedPollInterval);
+  lastLogCount = 0;
+  seedPollInterval = setInterval(async () => {
+    try {
+      const status = await api('GET', '/seed/status');
+      // Affiche les nouveaux logs
+      const newLogs = status.log.slice(lastLogCount);
+      newLogs.forEach(msg => seedLog(msg, msg.startsWith('ERREUR') ? 'err' : ''));
+      lastLogCount = status.log.length;
+
+      if (!status.running) {
+        clearInterval(seedPollInterval);
+        document.getElementById('seed-btn').disabled = false;
+        if (status.done && !status.error) {
+          seedLog('✓ Génération terminée avec succès !', 'info');
+          alert_('seed-alert', 'Données générées avec succès');
+          loadDashboard();
+        } else if (status.error) {
+          seedLog('✗ Erreur : ' + status.error, 'err');
+          alert_('seed-alert', 'Erreur lors de la génération', 'err');
+        }
+      }
+    } catch(e) {
+      clearInterval(seedPollInterval);
+      document.getElementById('seed-btn').disabled = false;
+    }
+  }, 800);
+}
+
+async function checkSeedStatus() {
+  try {
+    const status = await api('GET', '/seed/status');
+    seedLog(`État : running=${status.running} done=${status.done} logs=${status.log.length}`, 'info');
+    if (status.error) seedLog('Erreur : ' + status.error, 'err');
+  } catch(e) { seedLog('Impossible de contacter l\'API', 'err'); }
 }
 
 // ── INIT ──────────────────────────────────────────────────────
